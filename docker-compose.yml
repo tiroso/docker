@@ -8,13 +8,16 @@ services:
         ports:
             - "8083:8083"
         build:  https://github.com/tiroso/docker-fhem-sqlite.git\#master
-        privileged: true
         volumes:
-            - ./opt/fhem/config/configDB.db:/opt/fhem/config/configDB.db
+            - fhem-server-config:/opt/fhem/config
+            - fhem-server-log:/opt/fhem/log
         networks:
             - smarthome_internal
-            - bridge
 
 networks:
     smarthome_internal:
         driver: bridge
+
+volumes:
+    fhem-server-config:
+    fhem-server-log:
