@@ -8,6 +8,7 @@ services:
         ports:
             - "8083:8083"
         build:  https://github.com/tiroso/docker-fhem-sqlite.git#master
+        container_name: fhem_server
         volumes:
             - fhem-server-config:/opt/fhem/config
             - fhem-server-log:/opt/fhem/log
@@ -20,4 +21,6 @@ networks:
 
 volumes:
     fhem-server-config:
+        name: fhem-server-config
     fhem-server-log:
+        name: fhem-server-config
