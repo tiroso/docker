@@ -1,26 +1,25 @@
 version: '2'
 
 services:
-    fhem:
+    core:
         restart: always
         expose:
             - "8083"
         ports:
             - "8083:8083"
         build:  https://github.com/tiroso/docker-fhem-sqlite.git#master
-        container_name: fhem_server
+        image: docker-fhem-sqlite/latest
+        privileged: true
         volumes:
-            - fhem-server-config:/opt/fhem/config
-            - fhem-server-log:/opt/fhem/log
+            - core-config:/opt/fhem/config
+            - core-log:/opt/fhem/log
+        command: bash /opt/fhem/start.sh
         networks:
             - smarthome_internal
 
 networks:
     smarthome_internal:
-        driver: bridge
 
 volumes:
-    fhem-server-config:
-        name: fhem-server-config
-    fhem-server-log:
-        name: fhem-server-config
+    core-config:
+    core-log:
