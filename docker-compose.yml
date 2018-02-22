@@ -1,0 +1,20 @@
+version: '2'
+
+services:
+    fhem:
+        restart: always
+        expose:
+            - "8083"
+        ports:
+            - "8083:8083"
+        build:  https://github.com/tiroso/docker-fhem-sqlite.git\#master
+        privileged: true
+        volumes:
+            - ./opt/fhem/config/configDB.db:/opt/fhem/config/configDB.db
+        networks:
+            - smarthome_internal
+            - bridge
+
+networks:
+    smarthome_internal:
+        driver: bridge
