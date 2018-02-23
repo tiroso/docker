@@ -20,8 +20,8 @@ services:
         image: tiroso/fhem-sqlite
         privileged: true
         volumes:
-            - core-config:/opt/fhem/config
-            - core-log:/opt/fhem/log
+            - fhem-sqlite-core-config:/opt/fhem/config
+            - fhem-sqlite-core-log:/opt/fhem/log
         command: bash /opt/fhem/start.sh
         networks:
             - smarthome_internal
@@ -31,5 +31,5 @@ networks:
 
 volumes:
     portainer_data:
-    core-config:
-    core-log:
+    fhem-sqlite-core-config:
+    fhem-sqlite-core-log:
