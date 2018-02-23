@@ -1,14 +1,23 @@
 version: '2'
 
 services:
-    core:
+    portainer:
+        expose:
+            - "9000"
+        ports:
+            - "9000:9000"
+        image: portainer/portainer
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - portainer_data:/data
+    fhem-sqlite:
         restart: always
         expose:
             - "8083"
         ports:
             - "8083:8083"
-        build:  https://github.com/tiroso/docker-fhem-sqlite.git#master
-        image: docker-fhem-sqlite/latest
+        build:  https://github.com/tiroso/docker.git#master:fhem-sqlite
+        image: tiroso/fhem-sqlite
         privileged: true
         volumes:
             - core-config:/opt/fhem/config
@@ -21,5 +30,6 @@ networks:
     smarthome_internal:
 
 volumes:
+    portainer_data:
     core-config:
     core-log:
