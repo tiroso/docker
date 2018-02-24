@@ -5,5 +5,5 @@ RUN apt-get update && \
     apt-get clean 
     
 RUN mkdir /var/www/html/sv && git clone https://github.com/Martin-Gleiss/smartvisu.git --single-branch --branch master /var/www/html/sv
-#EXPOSE 80 
+RUN chown -cR www-data:www-data /var/www/html
 CMD ["apache2ctl", "-D", "FOREGROUND"]
