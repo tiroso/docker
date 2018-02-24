@@ -1,7 +1,7 @@
 
 FROM ubuntu
 RUN apt-get update && \ 
-    apt-get -y install curl unzip git php7.0 libapache2-mod-php7.0 && \
+    apt-get -y install curl unzip git php7.0 libapache2-mod-php7.0 php7.0-mbstring && \
     apt-get clean 
 
 WORKDIR "/var/www/html"
