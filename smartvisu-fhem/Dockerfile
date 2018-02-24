@@ -1,11 +1,21 @@
 
 FROM ubuntu
 RUN apt-get update && \ 
-    apt-get -y install git php7.0 libapache2-mod-php7.0 && \
+    apt-get -y install curl unzip git php7.0 libapache2-mod-php7.0 && \
     apt-get clean 
-    
-RUN mkdir /var/www/html/sv && git clone https://github.com/Martin-Gleiss/smartvisu.git --single-branch --branch master /var/www/html/sv
 
+WORKDIR "/var/www/html"
+RUN curl http://www.smartvisu.de/download/smartVISU_2.8.zip -o smartVISU_2.8.zip && \
+    unzip smartVISU_2.8.zip && rm smartVISU_2.8.zip && \
+    mv smartVISU sv
+    
+WORKDIR "/var/www/html/sv"
+
+RUN curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/master/readme.txt -o readme.txt && \
+    curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/master/lib/functions_config.php -o lib/functions_config.php && \
+    curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/master/lib/includes.php -o lib/includes.php && \
+    curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/master/config.ini.default -o config.ini && \
+    curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/master/pages/base/configure.php -o pages/base/configure.php && \
 
 RUN chown -cR www-data:www-data /var/www/html
 CMD ["apache2ctl", "-D", "FOREGROUND"]
