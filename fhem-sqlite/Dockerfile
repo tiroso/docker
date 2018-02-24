@@ -43,6 +43,5 @@ define ShutdownAfterUpdate notify global:UPDATE sleep 5;;delete UpdateOnStart;;d
 
 RUN perl fhem.pl fhem.cfg | tee /opt/fhem/log/fhem.log && \
 	rm /opt/fhem/log/* && \
-	rm -R /opt/fhem/restoreDir && \
 	rm /opt/fhem/fhem.cfg && \
 	rm /opt/fhem/FHEM/template.layout
