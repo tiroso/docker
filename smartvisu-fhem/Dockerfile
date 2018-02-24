@@ -3,7 +3,6 @@
 ##
 
 ## Use latest nginx Alpine based images as starting point
-FROM php:7-fpm-alpine
 FROM ubuntu 
 RUN apt-get update 
 RUN apt-get install –y apache2 
