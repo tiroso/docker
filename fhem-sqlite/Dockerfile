@@ -41,6 +41,8 @@ define UpdateOnStart notify global:INITIALIZED sleep 5;;update\n\
 define ShutdownAfterUpdate notify global:UPDATE sleep 5;;delete UpdateOnStart;;delete ShutdownAfterUpdate;;sleep 5;;save;;sleep 5;;configdb migrate;;sleep5;;shutdown'\
 >> /opt/fhem/fhem.cfg
 
+RUN sed -i 's/updateInBackground.*$/updateInBackground 0\r\nattr global nofork 1/' /opt/fhem/fhem.cfg
+
 RUN perl fhem.pl fhem.cfg | tee /opt/fhem/log/fhem.log && \
 	rm /opt/fhem/log/* && \
 	rm /opt/fhem/fhem.cfg && \
