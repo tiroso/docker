@@ -5,6 +5,7 @@ RUN apt-get update && \
     apt-get clean 
     
 RUN mkdir /var/www/html/sv && git clone https://github.com/Martin-Gleiss/smartvisu.git --single-branch --branch master /var/www/html/sv
-RUN touch /var/www/html/sv/config.ini
+
+
 RUN chown -cR www-data:www-data /var/www/html
 CMD ["apache2ctl", "-D", "FOREGROUND"]
