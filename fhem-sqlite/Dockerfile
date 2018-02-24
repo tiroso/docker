@@ -32,7 +32,7 @@ COPY configDB.conf /opt/fhem/configDB.conf
 COPY logDB.conf /opt/fhem/logDB.conf
 
 # Create /opt/fhem/start.sh
-COPY start.sh /start.sh
+COPY starttemp.sh /start.sh
 EXPOSE 7072
 RUN bash /start.sh
 RUN perl /opt/fhem/fhem.pl 7072 "update all"
@@ -45,7 +45,7 @@ RUN pkill -f "perl fhem.pl fhem.cfg" && \
 	update-rc.d -f fhem remove && \
 	chown -R root:root /opt/fhem/ && \
 	userdel fhem
-
+COPY start.sh /start.sh
 WORKDIR "/opt/fhem"
 
 RUN rm /opt/fhem/log/* && \
