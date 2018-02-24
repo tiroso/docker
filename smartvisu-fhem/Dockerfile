@@ -10,7 +10,7 @@ COPY start.sh /
 
 ## Install GIT
 RUN apk add --no-cache git \
-    && chmod a+x /entrypoint.sh
+    && chmod a+x /start.sh
     
 
 CMD ["/start.sh"]
