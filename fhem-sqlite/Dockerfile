@@ -5,7 +5,7 @@ MAINTAINER Tim Sobisch
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
 
-RUN apt-get update && apt-get -y install supervisor telnet wget apt-transport-https && \
+RUN apt-get update && apt-get -y install build-essential libjson-perl supervisor telnet wget apt-transport-https && \
 	wget -qO - https://debian.fhem.de/archive.key | apt-key add - && \
 	echo "deb http://debian.fhem.de/nightly/ /" | tee -a /etc/apt/sources.list.d/fhem.list && \
 	apt-get update && apt-get -y --force-yes install fhem  git supervisor make gcc-avr avrdude avr-libc sqlite3 libdbi-perl libdbd-sqlite3-perl subversion unzip usbutils libcrypt-rijndael-perl libxml-simple-perl && \
@@ -37,7 +37,7 @@ COPY start.sh /start.sh
 WORKDIR "/opt/fhem"
 
 RUN echo '\n\
-define UpdateOnStart notify global:INITIALIZED sleep 5;;update\n\
+define UpdateOnStart notify global:INITIALIZED sleep 5;;update force https://raw.githubusercontent.com/herrmannj/fronthem/master/controls_fronthem.txt;;sleep 5;;update\n\
 define ShutdownAfterUpdate notify global:UPDATE sleep 5;;delete UpdateOnStart;;delete ShutdownAfterUpdate;;sleep 5;;save;;sleep 5;;configdb migrate;;sleep5;;shutdown'\
 >> /opt/fhem/fhem.cfg
 
