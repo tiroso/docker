@@ -28,7 +28,7 @@ COPY logDB.conf /opt/fhem/logDB.conf
 
 # Create /opt/fhem/start.sh
 COPY start.sh /start.sh
-
+EXPOSE 7072
 RUN perl /opt/fhem/fhem.pl 7072 "update all"
 RUN perl /opt/fhem/fhem.pl 7072 "attr global nofork 1"
 RUN perl /opt/fhem/fhem.pl 7072 "attr global updateInBackground 0"
