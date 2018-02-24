@@ -2,4 +2,4 @@
 
 "docker-compose pull portainer"
 
-"docker up"
+"docker-compose up"
