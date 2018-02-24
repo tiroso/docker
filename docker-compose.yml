@@ -22,7 +22,7 @@ services:
         volumes:
             - fhem-sqlite-core-config:/opt/fhem/config
             - fhem-sqlite-core-log:/opt/fhem/log
-        command: bash /opt/fhem/start.sh
+        command: bash /start.sh
         networks:
             - smarthome_internal
 
