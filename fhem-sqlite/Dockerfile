@@ -5,7 +5,8 @@ MAINTAINER Tim Sobisch
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
 
-RUN apt-get update && apt-get -y install build-essential libjson-perl supervisor telnet wget apt-transport-https && \
+RUN apt-get update && apt-get -y install build-essential cpanminus libjson-perl supervisor telnet wget apt-transport-https && \
+	cpanm Net::WebSocket::Server && \
 	wget -qO - https://debian.fhem.de/archive.key | apt-key add - && \
 	echo "deb http://debian.fhem.de/nightly/ /" | tee -a /etc/apt/sources.list.d/fhem.list && \
 	apt-get update && apt-get -y --force-yes install fhem  git supervisor make gcc-avr avrdude avr-libc sqlite3 libdbi-perl libdbd-sqlite3-perl subversion unzip usbutils libcrypt-rijndael-perl libxml-simple-perl && \
