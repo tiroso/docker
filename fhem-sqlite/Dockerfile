@@ -11,6 +11,11 @@ RUN apt-get update && apt-get -y install supervisor telnet wget apt-transport-ht
 	apt-get update && apt-get -y --force-yes install fhem  git supervisor make gcc-avr avrdude avr-libc sqlite3 libdbi-perl libdbd-sqlite3-perl subversion unzip usbutils libcrypt-rijndael-perl libxml-simple-perl && \
 	apt-get clean && cd / && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+RUN pkill -f "perl fhem.pl fhem.cfg" && \
+	update-rc.d -f fhem remove && \
+	chown -R root:root /opt/fhem/ && \
+	userdel fhem
+
 # Create the Config Folder and creates the logDB and configDB
 RUN mkdir /opt/fhem/config
 RUN echo "pragma auto_vacuum=2;" | sqlite3 /opt/fhem/config/configDB.db
@@ -29,6 +34,7 @@ COPY logDB.conf /opt/fhem/logDB.conf
 # Create /opt/fhem/start.sh
 COPY start.sh /start.sh
 EXPOSE 7072
+RUN bash /opt/fhem/start.sh
 RUN perl /opt/fhem/fhem.pl 7072 "update all"
 RUN perl /opt/fhem/fhem.pl 7072 "attr global nofork 1"
 RUN perl /opt/fhem/fhem.pl 7072 "attr global updateInBackground 0"
