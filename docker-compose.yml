@@ -14,6 +14,7 @@ services:
         restart: always
         expose:
             - "8083"
+            - "2121"
         ports:
             - "8083:8083"
         build:  https://github.com/tiroso/docker.git#master:fhem-sqlite
@@ -31,8 +32,6 @@ services:
             - "80:80"
         build:  https://github.com/tiroso/docker.git#master:smartvisu-fhem
         image: tiroso/smartvisu-fhem
-        volumes:
-            - smartvisu-fhem:/var/www/html
         networks:
             - smarthome_internal
 
