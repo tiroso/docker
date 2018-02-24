@@ -15,7 +15,7 @@ RUN pkill -f "perl fhem.pl fhem.cfg" && \
 	update-rc.d -f fhem remove && \
 	chown -R root:root /opt/fhem/ && \
 	userdel fhem
-COPY fhem.cfg /opt/fhem/fhem.cfg
+
 # Create the Config Folder and creates the logDB and configDB
 RUN mkdir /opt/fhem/config
 RUN echo "pragma auto_vacuum=2;" | sqlite3 /opt/fhem/config/configDB.db
@@ -32,23 +32,18 @@ COPY configDB.conf /opt/fhem/configDB.conf
 COPY logDB.conf /opt/fhem/logDB.conf
 
 # Create /opt/fhem/start.sh
-COPY starttemp.sh /start.sh
-EXPOSE 7072
-RUN bash /start.sh
-RUN perl /opt/fhem/fhem.pl 7072 "update all"
-RUN perl /opt/fhem/fhem.pl 7072 "attr global nofork 1"
-RUN perl /opt/fhem/fhem.pl 7072 "attr global updateInBackground 0"
-RUN perl /opt/fhem/fhem.pl 7072 "save"
-RUN perl /opt/fhem/fhem.pl 7072 "configdb migrate"
-
-RUN pkill -f "perl fhem.pl fhem.cfg" && \
-	update-rc.d -f fhem remove && \
-	chown -R root:root /opt/fhem/ && \
-	userdel fhem
 COPY start.sh /start.sh
+
 WORKDIR "/opt/fhem"
 
-RUN rm /opt/fhem/log/* && \
+RUN echo '\n\
+define UpdateOnStart notify global:INITIALIZED sleep 5;;update\n\
+define ShutdownAfterUpdate notify global:UPDATE sleep 5;;delete UpdateOnStart;;delete ShutdownAfterUpdate;;sleep 5;;save;;sleep 5;;configdb migrate;;sleep5;;shutdown'\
+>> /opt/fhem/fhem.cfg
+
+RUN perl fhem.pl fhem.cfg | tee /opt/fhem/log/fhem.log && \
+	rm /opt/fhem/log/* && \
+	rm /opt/fhem/log/* && \
 	rm -R /opt/fhem/restoreDir && \
 	rm /opt/fhem/fhem.cfg && \
 	rm /opt/fhem/FHEM/template.layout
