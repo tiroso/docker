@@ -15,7 +15,7 @@ RUN pkill -f "perl fhem.pl fhem.cfg" && \
 	update-rc.d -f fhem remove && \
 	chown -R root:root /opt/fhem/ && \
 	userdel fhem
-
+COPY fhem.cfg /opt/fhem/fhem.cfg
 # Create the Config Folder and creates the logDB and configDB
 RUN mkdir /opt/fhem/config
 RUN echo "pragma auto_vacuum=2;" | sqlite3 /opt/fhem/config/configDB.db
