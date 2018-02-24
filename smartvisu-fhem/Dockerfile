@@ -16,6 +16,8 @@ RUN curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/mast
     curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/master/lib/functions_config.php -o lib/functions_config.php && \
     curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/master/lib/includes.php -o lib/includes.php && \
     curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/master/pages/base/configure.php -o pages/base/configure.php
+    
+RUN sed -i "s/driver_address = '192.168.178.33'/driver_address = 'fhem-sqlite'/" /opt/fhem/fhem.cfg
 
 RUN chown -cR www-data:www-data /var/www/html
 CMD ["apache2ctl", "-D", "FOREGROUND"]
