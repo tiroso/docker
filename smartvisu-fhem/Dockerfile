@@ -1,9 +1,5 @@
-##
-## SmartVISU
-##
 
-## Use latest nginx Alpine based images as starting point
-FROM ubuntu 
+FROM debian:jessie 
 RUN apt-get update && \ 
     apt-get –y install apache2 && \
     apt-get clean 
