@@ -29,11 +29,11 @@ COPY logDB.conf /opt/fhem/logDB.conf
 # Create /opt/fhem/start.sh
 COPY start.sh /start.sh
 
-RUN perl fhem.pl 7072 "update all"
-RUN perl fhem.pl 7072 "attr global nofork 1"
-RUN perl fhem.pl 7072 "attr global updateInBackground 0"
-RUN perl fhem.pl 7072 "save"
-RUN perl fhem.pl 7072 "configdb migrate"
+RUN perl /opt/fhem/fhem.pl 7072 "update all"
+RUN perl /opt/fhem/fhem.pl 7072 "attr global nofork 1"
+RUN perl /opt/fhem/fhem.pl 7072 "attr global updateInBackground 0"
+RUN perl /opt/fhem/fhem.pl 7072 "save"
+RUN perl /opt/fhem/fhem.pl 7072 "configdb migrate"
 
 RUN pkill -f "perl fhem.pl fhem.cfg" && \
 	update-rc.d -f fhem remove && \
