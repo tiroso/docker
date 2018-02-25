@@ -21,6 +21,7 @@ RUN curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/mast
     curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/master/lib/includes.php -o lib/includes.php && \
     curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/master/pages/base/configure.php -o pages/base/configure.php
     
+RUN apt-get autoremove curl unzip git && apt-get clean
 #RUN sed -i "s|config.ini|config.ini/config.ini|" /var/www/html/lib/includes.php
 #RUN sed -i "s|listen 80|listen 8080|i" /etc/apache2/ports.conf
 #RUN sed -i "s|VirtualHost.*80|VirtualHost *:8080|i" /etc/apache2/sites-enabled/000-default.conf
