@@ -8,16 +8,15 @@ WORKDIR "/var/www/html"
 RUN curl http://www.smartvisu.de/download/smartVISU_2.8.zip -o smartVISU_2.8.zip && \
     unzip smartVISU_2.8.zip && rm smartVISU_2.8.zip && \
     mv smartVISU/* . && \
-    rm -R smartVISU && \
-    mkdir config
+    rm -R smartVISU
 
 RUN curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/master/readme.txt -o readme.txt && \
-    curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/master/config.ini.default -o config/config.ini && \
+    curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/master/config.ini.default -o config.ini && \
     curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/master/lib/functions_config.php -o lib/functions_config.php && \
     curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/master/lib/includes.php -o lib/includes.php && \
     curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/master/pages/base/configure.php -o pages/base/configure.php
     
-RUN sed -i "s|config.ini|config.ini/config.ini|" /var/www/html/lib/includes.php
+#RUN sed -i "s|config.ini|config.ini/config.ini|" /var/www/html/lib/includes.php
 
 RUN chown -cR www-data:www-data /var/www/html
 CMD ["apache2ctl", "-D", "FOREGROUND"]
