@@ -2,7 +2,7 @@
 <br>
 You can edit the Dockerfile for what YOU need. In my case for the first step, it is configDB and logDB via sqlite and the files for fronthem<br>
 <br>
-docker build --tag own/fhem-server<br>
+docker build --tag own/fhem-server .<br>
 <br>
 docker volume create fhem-server<br>
 <br>
