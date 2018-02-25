@@ -31,9 +31,7 @@ services:
         ports:
             - "80:80"
         volumes:
-            - smartvisu-config:/var/www/html/config
-            - smartvisu-widgets:/var/www/html/widgets
-            - smartvisu-pages:/var/www/html/pages
+            - smartvisu-fhem:/var/www/html
         build:  https://github.com/tiroso/docker.git#master:smartvisu-fhem
         image: tiroso/smartvisu
         networks:
@@ -48,6 +46,4 @@ volumes:
     fhem-server-log:
     fhem-server-core:
     fhem-server-www:
-    smartvisu-config:
-    smartvisu-widgets:
-    smartvisu-pages:
+    smartvisu-fhem:
