@@ -1,22 +1,15 @@
-FROM debian:jessie
+FROM tiroso/fhem-basic:latest
 
 MAINTAINER Tim Sobisch
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
-
-RUN apt-get update && apt-get -y install build-essential cpanminus libjson-perl libwww-perl libsoap-lite-perl libxml-parser-lite-perl supervisor telnet wget apt-transport-https && \
-	cpanm Net::WebSocket::Server && \
-	wget -qO - https://debian.fhem.de/archive.key | apt-key add - && \
-	echo "deb http://debian.fhem.de/nightly/ /" | tee -a /etc/apt/sources.list.d/fhem.list && \
-	apt-get update && apt-get -y --force-yes install fhem  git supervisor make gcc-avr avrdude avr-libc sqlite3 libdbi-perl libdbd-sqlite3-perl subversion unzip usbutils libcrypt-rijndael-perl libxml-simple-perl && \
-	apt-get clean && cd / && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-RUN pkill -f "perl fhem.pl fhem.cfg" && \
-	update-rc.d -f fhem remove && \
-	chown -R root:root /opt/fhem/ && \
-	userdel fhem
-
+#----------------------------------------------------------------------------------------------------------------------
+#Install all for SQLITE. Create configDB and logDB
+#configDB will be in the seperated folder /opt/fhem/config
+RUN apt-get update && \
+apt-get -y install sqlite3 libdbi-perl libdbd-sqlite3-perl && \
+apt-get clean  && apt-get autoclean && apt-get autoremove -y && cd / && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 # Create the Config Folder and creates the logDB and configDB
 RUN mkdir /opt/fhem/config
 RUN echo "pragma auto_vacuum=2;" | sqlite3 /opt/fhem/config/configDB.db
@@ -37,16 +30,16 @@ COPY start.sh /start.sh
 
 WORKDIR "/opt/fhem"
 
+# UpdateOnStart -> update force for fronthem -> General update
+# ShutdownAfterUpdate -> after update delete UpdateOnStart + ShutdownAfterUpdate and migrate existing configuration into configDB
+# -> at the end..shutdown fhem
 RUN echo '\n\
 define UpdateOnStart notify global:INITIALIZED sleep 5;;update force https://raw.githubusercontent.com/herrmannj/fronthem/master/controls_fronthem.txt;;sleep 5;;update\n\
 define ShutdownAfterUpdate notify global:UPDATE sleep 5;;delete UpdateOnStart;;delete ShutdownAfterUpdate;;sleep 5;;save;;sleep 5;;configdb migrate;;sleep5;;shutdown'\
 >> /opt/fhem/fhem.cfg
 
-RUN sed -i 's/updateInBackground.*$/updateInBackground 0\r\nattr global nofork 1/' /opt/fhem/fhem.cfg
-
+#Run the current configuration to update FHEM internal -> Delete all produced logs and the fhem.cfg, cause it is now configDB
 RUN perl fhem.pl fhem.cfg | tee /opt/fhem/log/fhem.log && \
 	rm /opt/fhem/log/* && \
-	rm /opt/fhem/fhem.cfg && \
-	rm /opt/fhem/FHEM/template.layout
-
-CMD bash /start.sh
+	rm /opt/fhem/fhem.cfg
+#----------------------------------------------------------------------------------------------------------------------
