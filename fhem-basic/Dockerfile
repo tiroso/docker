@@ -8,7 +8,7 @@ RUN apt-get update && apt-get -y --force-yes install wget
 RUN wget -qO - https://debian.fhem.de/archive.key | apt-key add - && \
 	echo "deb http://debian.fhem.de/nightly/ /" | tee -a /etc/apt/sources.list.d/fhem.list && \
 	apt-get update && apt-get -y --force-yes install fhem && \
-	apt-get clean && cd / && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+	apt-get clean  && apt-get autoclean && apt-get autoremove -y && cd / && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN pkill -f "perl fhem.pl fhem.cfg" && \
 	update-rc.d -f fhem remove && \
