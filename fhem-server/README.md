@@ -10,5 +10,5 @@ if you yust want to test the FHEM Server without persistent you can do it withou
 When you run/use SONOS and Telnet inside this container you have to set the network Mode to host<br>
 docker run --restart always -d --net = "host" --name fhem-server --mount source=fhem-server,target=/opt/fhem --publish "8083:8083" own/fhem-server<br>
 <br>
-FHEM with open ports for fronthem
+FHEM with open ports for fronthem<br>
 docker run --restart always -d --net = "host" --name fhem-server --mount source=fhem-server,target=/opt/fhem --publish "8083:8083" --publish "2121:2121" own/fhem-server
