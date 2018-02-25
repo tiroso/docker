@@ -8,7 +8,7 @@ docker build --tag tiroso/fhem-server https://github.com/tiroso/docker.git\#mast
 docker volume create fhem-server
 
 Just FHEM
-docker run --restart always -d --name fhem-server --mount source=fhem-server,target=/opt/fhem --publish "8083:8083" tiroso/fhem-server bash /start.sh
+docker run --restart always -d --net = "host" --name fhem-server --mount source=fhem-server,target=/opt/fhem --publish "8083:8083" tiroso/fhem-server bash /start.sh
 
 FHEM with open ports for fronthem
-docker run --restart always -d --name fhem-server --mount source=fhem-server,target=/opt/fhem --publish "8083:8083" --publish "2121:2121" tiroso/fhem-server bash /start.sh
+docker run --restart always -d --net = "host" --name fhem-server --mount source=fhem-server,target=/opt/fhem --publish "8083:8083" --publish "2121:2121" tiroso/fhem-server bash /start.sh
