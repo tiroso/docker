@@ -8,7 +8,8 @@ WORKDIR "/var/www/html"
 RUN curl http://www.smartvisu.de/download/smartVISU_2.8.zip -o smartVISU_2.8.zip && \
     unzip smartVISU_2.8.zip && rm smartVISU_2.8.zip && \
     mv smartVISU/* . && \
-    rm -R smartVISU
+    rm -R smartVISU && \
+    rm index.html
 
 RUN curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/master/readme.txt -o readme.txt && \
     curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/master/config.ini.default -o config.ini && \
