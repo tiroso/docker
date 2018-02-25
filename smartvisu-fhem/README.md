@@ -1,11 +1,7 @@
-# smartvisu-fhem
+# smartvisu-fhem<br>
 
-Install Docker CE on your Host
-
-This is a Dockerfile to create full image of smartvisu for fhem
-
-docker build --tag tiroso/smartvisu-fhem https://github.com/tiroso/docker.git\#master:smartvisu-fhem
-
-docker volume create smartvisu-fhem
-
-docker run --restart always -d --name smartvisu-fhem --mount source=smartvisu-fhem,target=/var/www/html --publish "8080:80" tiroso/smartvisu-fhem
+if you want the data of smartvisu persistent execute the following command<br>
+docker volume create smartvisu-fhem<br>
+<br>
+now create your container<br>
+docker run --restart always -d --name smartvisu-fhem --mount source=smartvisu-fhem,target=/var/www/html --publish "80:80" tiroso/smartvisu-fhem
