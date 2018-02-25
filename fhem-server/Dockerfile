@@ -10,7 +10,7 @@ WORKDIR "/opt/fhem"
 #----------------------------------------------------------------------------------------------------------------------
 # Make a FULL Update of FHEM -> Cause the fhem-basic is not up to date
 RUN echo '\n\
-define InstallRoutine notify global:INITIALIZED sleep 5;;delete InstallRoutine;;update;;sleep 5;;shutdown'\
+define InstallRoutine notify global:INITIALIZED sleep 5;;delete InstallRoutine;;save;;update;;sleep 5;;shutdown'\
 >> /opt/fhem/fhem.cfg
 RUN perl fhem.pl fhem.cfg | tee /opt/fhem/log/fhem.log
 #----------------------------------------------------------------------------------------------------------------------
@@ -18,7 +18,7 @@ RUN perl fhem.pl fhem.cfg | tee /opt/fhem/log/fhem.log
 #----------------------------------------------------------------------------------------------------------------------
 # Install all for fronthem
 RUN echo '\n\
-define InstallRoutine notify global:INITIALIZED sleep 5;;delete InstallRoutine;;update force https://raw.githubusercontent.com/herrmannj/fronthem/master/controls_fronthem.txt;;sleep 5;;shutdown'\
+define InstallRoutine notify global:INITIALIZED sleep 5;;delete InstallRoutine;;save;;update force https://raw.githubusercontent.com/herrmannj/fronthem/master/controls_fronthem.txt;;sleep 5;;shutdown'\
 >> /opt/fhem/fhem.cfg
 RUN perl fhem.pl fhem.cfg | tee /opt/fhem/log/fhem.log
 #----------------------------------------------------------------------------------------------------------------------
@@ -51,7 +51,7 @@ COPY start.sh /start.sh
 # ShutdownAfterUpdate -> after update delete UpdateOnStart + ShutdownAfterUpdate and migrate existing configuration into configDB
 # -> at the end..shutdown fhem
 RUN echo '\n\
-define InstallRoutine notify global:INITIALIZED sleep 5;;delete InstallRoutine;;configdb migrate;;sleep 5;;shutdown'\
+define InstallRoutine notify global:INITIALIZED sleep 5;;delete InstallRoutine;;save;;configdb migrate;;sleep 5;;shutdown'\
 >> /opt/fhem/fhem.cfg
 
 #Run the current configuration to update FHEM internal -> Delete fhem.cfg, cause it is now configDB
