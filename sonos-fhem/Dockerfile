@@ -8,7 +8,6 @@ ENV TERM xterm
 WORKDIR "/opt/fhem"
 
 RUN rm * -R
-RUN touch /opt/fhem/00_SONOS.pm
 COPY start.sh /start.sh
 
 CMD bash /start.sh
