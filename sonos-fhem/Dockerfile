@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y libwww-perl libsoap-lite-perl libxml-pa
 RUN mkdir /opt/fhem
 WORKDIR "/opt/fhem"
 
-RUN rm * -R
+#RUN rm * -R
 COPY start.sh /start.sh
 
 CMD bash /start.sh
