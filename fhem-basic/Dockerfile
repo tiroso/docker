@@ -17,4 +17,5 @@ RUN pkill -f "perl fhem.pl fhem.cfg" && \
 
 RUN sed -i 's/updateInBackground.*$/updateInBackground 0\r\nattr global nofork 1/' /opt/fhem/fhem.cfg
 
+COPY start.sh /start.sh
 CMD bash /start.sh
