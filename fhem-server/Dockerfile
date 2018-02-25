@@ -48,3 +48,5 @@ RUN perl fhem.pl fhem.cfg | tee /opt/fhem/log/fhem.log && \
 	rm /opt/fhem/log/* && \
 	rm /opt/fhem/fhem.cfg && \
 	rm /opt/fhem/FHEM/template.layout
+
+CMD bash /start.sh
