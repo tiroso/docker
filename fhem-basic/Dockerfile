@@ -15,4 +15,6 @@ RUN pkill -f "perl fhem.pl fhem.cfg" && \
 	chown -R root:root /opt/fhem/ && \
 	userdel fhem
 
+RUN sed -i 's/updateInBackground.*$/updateInBackground 0\r\nattr global nofork 1/' /opt/fhem/fhem.cfg
+
 CMD bash /start.sh
