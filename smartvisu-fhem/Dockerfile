@@ -1,5 +1,8 @@
 
 FROM ubuntu
+
+ENV TERM xterm
+
 RUN apt-get update && \ 
     apt-get -y install curl unzip git php7.0 libapache2-mod-php7.0 php7.0-mbstring && \
     apt-get clean 
