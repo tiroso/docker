@@ -10,18 +10,19 @@ services:
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
             - portainer_data:/data
-    fhem-sqlite:
+    fhem-server:
         restart: always
-        expose:
-            - "2121"
         ports:
             - "8083:8083"
-        build:  https://github.com/tiroso/docker.git#master:fhem-sqlite
-        image: tiroso/fhem-sqlite
+            - "2121:2121"
+        build:  https://github.com/tiroso/docker.git#master:fhem-server
+        image: tiroso/fhem-server
         privileged: true
         volumes:
-            - fhem-sqlite-core-config:/opt/fhem/config
-            - fhem-sqlite-core-log:/opt/fhem/log
+            - fhem-server-config:/opt/fhem/config
+            - fhem-server-log:/opt/fhem/log
+            - fhem-server-core:/opt/fhem/FHEM
+            - fhem-server-www:/opt/fhem/www
         command: bash /start.sh
         networks:
             - smarthome_internal
@@ -29,9 +30,12 @@ services:
         restart: always
         ports:
             - "80:80"
-            - "2121:2121"
+        volumes:
+            - smartvisu-config:/var/www/html/config
+            - smartvisu-widgets:/var/www/html/widgets
+            - smartvisu-pages:/var/www/html/pages
         build:  https://github.com/tiroso/docker.git#master:smartvisu-fhem
-        image: tiroso/smartvisu-fhem
+        image: tiroso/smartvisu
         networks:
             - smarthome_internal
 
@@ -40,6 +44,10 @@ networks:
 
 volumes:
     portainer_data:
-    fhem-sqlite-core-config:
-    fhem-sqlite-core-log:
-    smartvisu-fhem:
+    fhem-server-config:
+    fhem-server-log:
+    fhem-server-core:
+    fhem-server-www:
+    smartvisu-config:
+    smartvisu-widgets:
+    smartvisu-pages:
