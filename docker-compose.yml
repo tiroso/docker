@@ -33,6 +33,16 @@ services:
         image: tiroso/smartvisu-fhem
         networks:
             - smarthome_internal
+    sonos-fhem:
+        restart: always
+        expose:
+            - "4711"
+        volumes_from:
+            - fhem-server/FHEM/00_SONOS.pm:/opt/fhem/00_SONOS.pm:ro
+        build:  https://github.com/tiroso/docker.git#master:sonos-fhem
+        image: tiroso/sonos-fhem
+        networks:
+            - smarthome_internal
 
 networks:
     smarthome_internal:
