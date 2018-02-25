@@ -17,7 +17,7 @@ RUN curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/mast
     curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/master/lib/includes.php -o lib/includes.php && \
     curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/master/pages/base/configure.php -o pages/base/configure.php
     
-RUN sed -i "s/\\$cfg = new config\(const_path.'config.ini'\);/\\$cfg = new config(const_path.'config/config.ini');/" /var/www/html/config/config.ini
+RUN sed -i "s/\$cfg = new config\(const_path.'config.ini'\);/$cfg = new config(const_path.'config/config.ini');/" /var/www/html/config/config.ini
 
 RUN chown -cR www-data:www-data /var/www/html
 CMD ["apache2ctl", "-D", "FOREGROUND"]
