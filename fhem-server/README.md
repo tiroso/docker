@@ -4,7 +4,7 @@ Install Docker CE on your Host
 This is a Dockerfile to create full image of FHEM and set it to configDB und LogDB
 The paths /opt/fhem/config/ + /opt/fhem/log/ will be stored in docker managed volumes named "fhem-server-config" and "fhem-server-log"
 
-docker build --tag tiroso/fhem-sqlite https://github.com/tiroso/docker.git\#master:fhem-sqlite
+docker build --tag tiroso/fhem-sqlite https://github.com/tiroso/docker.git\#master:fhem-server
 
 docker volume create fhem-sqlite-core-config && docker volume create fhem-sqlite-core-log
 
