@@ -30,7 +30,7 @@ services:
         volumes:
             - smartvisu-fhem:/var/www/html
         build:  https://github.com/tiroso/docker.git#master:smartvisu-fhem
-        image: tiroso/smartvisu
+        image: tiroso/smartvisu-fhem
         networks:
             - smarthome_internal
 
