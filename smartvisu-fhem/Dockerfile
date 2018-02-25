@@ -22,7 +22,7 @@ RUN curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/mast
     curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/master/pages/base/configure.php -o pages/base/configure.php
     
 #RUN sed -i "s|config.ini|config.ini/config.ini|" /var/www/html/lib/includes.php
-RUN sed -i "s|listen 80|listen 8080|" /etc/apache2/ports.conf
+# RUN sed -i "s|listen 80|listen 8080|" /etc/apache2/ports.conf
 
 RUN chown -cR www-data:www-data /var/www/html
 CMD ["apache2ctl", "-D", "FOREGROUND"]
