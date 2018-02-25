@@ -4,6 +4,25 @@ MAINTAINER Tim Sobisch
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
+
+WORKDIR "/opt/fhem"
+
+#----------------------------------------------------------------------------------------------------------------------
+# Make a FULL Update of FHEM -> Cause the fhem-basic is not up to date
+RUN echo '\n\
+define InstallRoutine notify global:INITIALIZED sleep 5;;delete InstallRoutine;;update;;sleep 5;;shutdown'\
+>> /opt/fhem/fhem.cfg
+RUN perl fhem.pl fhem.cfg | tee /opt/fhem/log/fhem.log
+#----------------------------------------------------------------------------------------------------------------------
+
+#----------------------------------------------------------------------------------------------------------------------
+# Install all for fronthem
+RUN echo '\n\
+define InstallRoutine notify global:INITIALIZED sleep 5;;delete InstallRoutine;;update force https://raw.githubusercontent.com/herrmannj/fronthem/master/controls_fronthem.txt;;sleep 5;;shutdown'\
+>> /opt/fhem/fhem.cfg
+RUN perl fhem.pl fhem.cfg | tee /opt/fhem/log/fhem.log
+#----------------------------------------------------------------------------------------------------------------------
+
 #----------------------------------------------------------------------------------------------------------------------
 #Install all for SQLITE. Create configDB and logDB
 #configDB will be in the seperated folder /opt/fhem/config
@@ -28,18 +47,14 @@ COPY logDB.conf /opt/fhem/logDB.conf
 # Create /opt/fhem/start.sh
 COPY start.sh /start.sh
 
-WORKDIR "/opt/fhem"
-
 # UpdateOnStart -> update force for fronthem -> General update
 # ShutdownAfterUpdate -> after update delete UpdateOnStart + ShutdownAfterUpdate and migrate existing configuration into configDB
 # -> at the end..shutdown fhem
 RUN echo '\n\
-define UpdateOnStart notify global:INITIALIZED sleep 5;;update force https://raw.githubusercontent.com/herrmannj/fronthem/master/controls_fronthem.txt;;sleep 5;;update\n\
-define ShutdownAfterUpdate notify global:UPDATE sleep 5;;delete UpdateOnStart;;delete ShutdownAfterUpdate;;sleep 5;;save;;sleep 5;;configdb migrate;;sleep5;;shutdown'\
+define InstallRoutine notify global:INITIALIZED sleep 5;;delete InstallRoutine;;configdb migrate;;sleep 5;;shutdown'\
 >> /opt/fhem/fhem.cfg
 
-#Run the current configuration to update FHEM internal -> Delete all produced logs and the fhem.cfg, cause it is now configDB
+#Run the current configuration to update FHEM internal -> Delete fhem.cfg, cause it is now configDB
 RUN perl fhem.pl fhem.cfg | tee /opt/fhem/log/fhem.log && \
-	rm /opt/fhem/log/* && \
 	rm /opt/fhem/fhem.cfg
 #----------------------------------------------------------------------------------------------------------------------
