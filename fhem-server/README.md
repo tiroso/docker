@@ -8,4 +8,4 @@ docker build --tag tiroso/fhem-sqlite https://github.com/tiroso/docker.git\#mast
 
 docker volume create fhem-sqlite-core-config && docker volume create fhem-sqlite-core-log
 
-docker run --restart always -d --name fhem-server --mount source=fhem-sqlite-core-config,target=/opt/fhem/config --mount source=fhem-sqlite-core-log,target=/opt/fhem/log --publish 8083:8083 tiroso/fhem-sqlite bash /start.sh
+docker run --restart always -d --name fhem-server --mount source=fhem-server-config,target=/opt/fhem/config --mount source=fhem-server-log,target=/opt/fhem/log --mount source=fhem-server-core,target=/opt/fhem/FHEM --mount source=fhem-server-www,target=/opt/fhem/www--publish 8083:8083 tiroso/fhem-server bash /start.sh
