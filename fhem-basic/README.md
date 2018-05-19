@@ -11,7 +11,7 @@
   </p>
 <h2>Run simple FHEM - Data binding</h2>
 <p>If you want to test it with persistent data (the FHEM root directory) you can execute the following commands:</p>
-<code>docker volume create fhem-basic</code>
+<code>docker volume create fhem-basic</code><br>
 <code>docker run --restart always -d --net = "host" --name fhem-basic --mount source=fhem-basic,target=/opt/fhem --publish "8083:8083" &lt;IMAGE&gt;</code><br>
 <p>&lt;IMAGE&gt;:<br>
   - <i>tiroso/fhem-basic:latest</i> - My Build on Docher Hub<br>
