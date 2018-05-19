@@ -1,7 +1,7 @@
 # README<br>
 <br>
-<b>Build own image<b><br>
-docker build --tag own/fhem-basic<br>
+<h2>Build own image</h2>
+<code>docker build --tag own/fhem-basic</code><br>
 <br>
 <br>
 If you want to test a simple FHEM Server (Without any extended Features - just basics) you can run following command:<br>
