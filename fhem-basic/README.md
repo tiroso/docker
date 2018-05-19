@@ -1,9 +1,8 @@
 # README<br>
 <br>
 <h2>Build own image</h2>
-<code>docker build --tag own/fhem-basic</code><br>
-<br>
-<br>
+<code>docker build --tag own/fhem-basic</code>
+<h2>Run simple FHEM</h2>
 If you want to test a simple FHEM Server (Without any extended Features - just basics) you can run following command:<br>
 docker run --restart always -d --name fhem-basic --publish "8083:8083" tiroso/fhem-basic:latest<br>
 <br>
