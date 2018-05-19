@@ -3,8 +3,12 @@
 <h2>Build own image</h2>
 <code>docker build --tag own/fhem-basic</code>
 <h2>Run simple FHEM</h2>
-If you want to test a simple FHEM Server (Without any extended Features - just basics) you can run following command:<br>
-docker run --restart always -d --name fhem-basic --publish "8083:8083" tiroso/fhem-basic:latest<br>
+<p>If you want to test a simple FHEM Server (Without any extended Features - just basics) you can run following command:</p>
+<code>docker run --restart always -d --name fhem-basic --publish "8083:8083" <IMAGE></code>
+<p>IMAGE:<br>
+  - <i>tiroso/fhem-basic:latest</i> - My Build on Docher Hub<br>
+  - <i>own/fhem-basic</i> - Yout self builded Image<br>
+  </p>
 <br>
 <br>
 If you want to test it with persistent data (the FHEM root directory) you can execute the following commands:<br>
