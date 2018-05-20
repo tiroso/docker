@@ -1,5 +1,5 @@
 
-FROM ubuntu
+FROM debian:stretch
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
