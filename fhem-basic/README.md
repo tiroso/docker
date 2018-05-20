@@ -1,7 +1,8 @@
 # README<br>
 <br>
 <h2>Build own image</h2>
-<code>docker build - --tag own/fhem-basic</code> -> Dockerfile
+<code>docker build - --tag own/fhem-basic</code> -> Local Dockerfile<br>
+<code>docker build https://github.com/tiroso/docker.git#master:fhem-basic --tag own/fhem-basic</code> -> With my github Dockerfile<br>
 <h2>Run simple FHEM</h2>
 <p>If you want to test a simple FHEM Server (Without any extended Features - just basics) you can run following command:</p>
 <code>docker run --restart always -d --name fhem-basic --publish "8083:8083" &lt;IMAGE&gt;</code><br>
