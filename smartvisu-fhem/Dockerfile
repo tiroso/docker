@@ -22,9 +22,9 @@ RUN curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/mast
     curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/master/lib/includes.php -o lib/includes.php && \
     curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/master/pages/base/configure.php -o pages/base/configure.php
     
-chown -R nginx:www-data /var/www/html
-chmod g+w /var/www/html
-chmod g+w /var/www/html/temp
+RUN chown -R nginx:www-data /var/www/html
+RUN chmod g+w /var/www/html
+RUN chmod g+w /var/www/html/temp
 
 RUN php-fpm -D
 ENTRYPOINT ["nginx","-g","'daemon off;'"]
