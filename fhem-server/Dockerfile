@@ -112,5 +112,4 @@ RUN if [ "$FHEM_SQLITE" = 1 ];\
     rm /opt/fhem/logDB.conf;\
     fi;
 #----------------------------------------------------------------------------------------------------------------------
-
-CMD bash /start.sh $FHEM_SQLITE
+ENTRYPOINT ["bash","/start.sh"]
