@@ -5,7 +5,7 @@ MAINTAINER Tim Sobisch
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
 
-RUN apt-get update && apt-get -y install apt-utils wget apt-transport-https telnet gnupg
+RUN apt-get update && apt-get -y install apt-utils wget apt-transport-https telnet gnupg procps
 
 RUN echo Europe/Berlin > /etc/timezone && dpkg-reconfigure tzdata
 
@@ -15,13 +15,13 @@ RUN wget -qO - https://debian.fhem.de/archive.key | apt-key add - && \
 RUN touch /sbin/init
 RUN apt-get update && apt-get -y install fhem
 
-RUN apt-get remove -y wget && \
-	apt-get clean  && apt-get autoclean && apt-get autoremove -y && cd / && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
 RUN pkill -f "perl fhem.pl fhem.cfg" && \
 	update-rc.d -f fhem remove && \
 	chown -R root:root /opt/fhem/ && \
 	userdel fhem
+
+RUN apt-get remove -y wget procps && \
+	apt-get clean  && apt-get autoclean && apt-get autoremove -y && cd / && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN sed -i 's/updateInBackground.*$/updateInBackground 0\r\nattr global nofork 1/' /opt/fhem/fhem.cfg
 
