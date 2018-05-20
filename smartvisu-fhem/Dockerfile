@@ -5,8 +5,6 @@
 ## Use latest nginx Alpine based images as starting point
 FROM php:7-fpm-alpine
 
-COPY entrypoint.sh /
-
 ## Install NGINX and GIT and CURL
 RUN mkdir -p /etc/nginx \
     && apk add --no-cache git nginx curl \
@@ -28,4 +26,5 @@ chown -R nginx:www-data /var/www/html
 chmod g+w /var/www/html
 chmod g+w /var/www/html/temp
 
-ENTRYPOINT ["/entrypoint.sh"]
+RUN php-fpm -D
+ENTRYPOINT ["nginx","-g","'daemon off;'"]
