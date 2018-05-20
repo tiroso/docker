@@ -4,5 +4,11 @@ set -e
 cd /opt/fhem
 port=7072
 
-echo "Starte FHEM"
-perl fhem.pl configDB | tee /opt/fhem/log/fhem.log
+if [ "$FHEM_SQLITE" = 1 ];
+then 
+echo "Starte FHEM - SQLITE";
+perl fhem.pl configDB;
+else
+echo "Starte FHEM";
+perl fhem.pl fhem.cfg;
+fi;
