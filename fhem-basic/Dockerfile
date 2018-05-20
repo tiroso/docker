@@ -5,7 +5,7 @@ MAINTAINER Tim Sobisch
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
 
-RUN apt-get update && apt-get -y install wget
+RUN apt-get update && apt-get -y install wget gnupg
 RUN wget -qO - https://debian.fhem.de/archive.key | apt-key add - && \
 	echo "deb http://debian.fhem.de/nightly/ /" | tee -a /etc/apt/sources.list.d/fhem.list && \
 	apt-get update && apt-get -y install fhem && apt-get remove -y wget && \
