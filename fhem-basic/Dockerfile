@@ -12,6 +12,7 @@ RUN echo Europe/Berlin > /etc/timezone && dpkg-reconfigure tzdata
 RUN wget -qO - https://debian.fhem.de/archive.key | apt-key add - && \
 	echo "deb http://debian.fhem.de/nightly/ /" | tee -a /etc/apt/sources.list.d/fhem.list
 	
+RUN touch /sbin/init
 RUN apt-get update && apt-get -y install fhem
 
 RUN apt-get remove -y wget && \
