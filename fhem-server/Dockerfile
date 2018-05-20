@@ -5,6 +5,11 @@ MAINTAINER Tim Sobisch
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
 
+ARG FHEM_FRONTHEM=0
+ARG FHEM_SQLITE=0
+
+ENV FHEM_SQLITE=${FHEM_SQLITE}
+
 RUN apt-get update && apt-get -y install apt-utils wget apt-transport-https telnet gnupg procps
 
 RUN echo Europe/Berlin > /etc/timezone && dpkg-reconfigure tzdata
