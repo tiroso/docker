@@ -18,7 +18,7 @@ RUN touch /sbin/init
 RUN apt-get update && apt-get -y install fhem
 
 #Delete User "FHEM" to run fhem with root rights
-RUN pkill -f "perl fhem.pl fhem.cfg" && \
+RUN pkill -f "fhem.pl" && \
 	update-rc.d -f fhem remove && \
 	chown -R root:root /opt/fhem/ && \
 	userdel fhem
@@ -42,8 +42,7 @@ RUN sed -i 's/updateInBackground.*$/updateInBackground 0\r\nattr global nofork 1
 #----------------------------------------------------------------------------------------------------------------------
 # Make a FULL Update of FHEM -> Cause the fhem-basic is not up to date
 RUN echo '\n\define InstallRoutine notify global:INITIALIZED sleep 5;;delete InstallRoutine;;save;;update;;sleep 5;;shutdown' >> /opt/fhem/fhem.cfg;
-#RUN perl fhem.pl fhem.cfg | tee /opt/fhem/log/fhem.log
-RUN perl fhem.pl fhem.cfg 2>&1
+RUN perl fhem.pl fhem.cfg | tee /opt/fhem/log/fhem.log
 #----------------------------------------------------------------------------------------------------------------------
 
 #----------------------------------------------------------------------------------------------------------------------
