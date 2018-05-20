@@ -5,9 +5,6 @@ MAINTAINER Tim Sobisch
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
 
-
-ENV FHEM_SQLITE=${FHEM_SQLITE}
-
 RUN apt-get update && apt-get -y install wget gnupg procps
 
 RUN echo Europe/Berlin > /etc/timezone && dpkg-reconfigure tzdata
@@ -35,12 +32,4 @@ WORKDIR "/opt/fhem"
 #Add nofork param to fhem.cfg
 RUN sed -i 's/updateInBackground.*$/updateInBackground 0\r\nattr global nofork 1/' /opt/fhem/fhem.cfg
 
-#----------------------------------------------------------------------------------------------------------------------
-# Make a FULL Update of FHEM -> Cause the fhem-basic is not up to date
-RUN echo '\ndefine InstallRoutine notify global:INITIALIZED sleep 5;;delete InstallRoutine;;save;;update;;sleep 5;;shutdown' >> /opt/fhem/fhem.cfg;
-RUN /usr/bin/perl fhem.pl -d /opt/fhem/fhem.cfg | tee /opt/fhem/log/fhem_init_start.log
-#----------------------------------------------------------------------------------------------------------------------
-
-#COPY start.sh File to Image
-COPY start.sh /start.sh
 ENTRYPOINT ["bash","/start.sh"]
