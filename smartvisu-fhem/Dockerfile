@@ -7,8 +7,7 @@ FROM php:7-fpm-alpine
 
 ## Install NGINX and GIT and CURL
 RUN mkdir -p /etc/nginx \
-    && apk add --no-cache git nginx curl \
-    && chmod a+x /entrypoint.sh
+    && apk add --no-cache git nginx curl
 
 COPY nginx.conf /etc/nginx
 
