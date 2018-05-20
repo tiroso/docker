@@ -41,8 +41,8 @@ RUN sed -i 's/updateInBackground.*$/updateInBackground 0\r\nattr global nofork 1
 
 #----------------------------------------------------------------------------------------------------------------------
 # Make a FULL Update of FHEM -> Cause the fhem-basic is not up to date
-RUN echo '\n\define InstallRoutine notify global:INITIALIZED sleep 5;;delete InstallRoutine;;save;;update;;sleep 5;;shutdown' >> /opt/fhem/fhem.cfg;
-RUN /usr/bin/perl fhem.pl -d /opt/fhem/fhem.cfg | tee /opt/fhem/log/fhem.log
+RUN echo '\ndefine InstallRoutine notify global:INITIALIZED sleep 5;;delete InstallRoutine;;save;;update;;sleep 5;;shutdown' >> /opt/fhem/fhem.cfg;
+RUN /usr/bin/perl fhem.pl -d /opt/fhem/fhem.cfg | tee /opt/fhem/log/fhem_init_start.log
 #----------------------------------------------------------------------------------------------------------------------
 
 #----------------------------------------------------------------------------------------------------------------------
@@ -54,7 +54,7 @@ RUN if [ "$FHEM_FRONTHEM" = 1 ];\
     echo '++++++++++++++++++++++++++++++';\
     sleep 10s;\
     echo '\ndefine InstallRoutine notify global:INITIALIZED sleep 5;;delete InstallRoutine;;save;;update force https://raw.githubusercontent.com/herrmannj/fronthem/master/controls_fronthem.txt;;sleep 5;;shutdown' >> /opt/fhem/fhem.cfg;\
-    /usr/bin/perl fhem.pl fhem.cfg | tee /opt/fhem/log/fhem.log;\
+    /usr/bin/perl fhem.pl fhem.cfg | tee /opt/fhem/log/fhem_fronthem_install.log;\
     fi;
 #----------------------------------------------------------------------------------------------------------------------
 
@@ -100,8 +100,8 @@ RUN if [ "$FHEM_SQLITE" = 1 ];\
     echo '+FHEM - SQLLite - SQLLiteMigration  +';\
     echo '+++++++++++++++++++++++++++++++++++++';\
     sleep 10s;\
-    echo '\n\define InstallRoutine notify global:INITIALIZED sleep 5;;delete InstallRoutine;;save;;configdb migrate;;sleep 5;;shutdown' >> /opt/fhem/fhem.cfg;\
-    perl fhem.pl fhem.cfg | tee /opt/fhem/log/fhem.log && rm /opt/fhem/fhem.cfg;\
+    echo '\ndefine InstallRoutine notify global:INITIALIZED sleep 5;;delete InstallRoutine;;save;;configdb migrate;;sleep 5;;shutdown' >> /opt/fhem/fhem.cfg;\
+    perl fhem.pl -d fhem.cfg | tee /opt/fhem/log/fhem_sqlite_install.log && rm /opt/fhem/fhem.cfg;\
     else\
     rm /opt/fhem/configDB.conf;\
     rm /opt/fhem/logDB.conf;\
