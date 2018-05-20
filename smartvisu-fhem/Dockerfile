@@ -15,11 +15,10 @@ RUN git clone https://github.com/Martin-Gleiss/smartvisu.git --single-branch --b
 
 WORKDIR "/var/www/html/smartvisu"
 
-RUN curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/master/readme.txt -o readme.txt && \
-    curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/master/config.ini.default -o config.ini && \
-    curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/master/lib/functions_config.php -o lib/functions_config.php && \
-    curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/master/lib/includes.php -o lib/includes.php && \
-    curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/master/pages/base/configure.php -o pages/base/configure.php
+COPY config.ini.default /var/www/html/smartvisu/config.ini
+COPY functions_config.php /var/www/html/smartvisu/lib/functions_config.php
+COPY includes.php /var/www/html/smartvisu/lib/includes.php
+COPY configure.php /var/www/html/smartvisu/pages/base/configure.php
     
 RUN chown -R nginx:www-data /var/www/html
 RUN chmod g+w /var/www/html
