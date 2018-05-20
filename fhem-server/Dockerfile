@@ -1,60 +1,109 @@
-FROM tiroso/fhem-basic:latest
+FROM debian:stretch
 
 MAINTAINER Tim Sobisch
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
 
-WORKDIR "/opt/fhem"
+RUN apt-get update && apt-get -y install apt-utils wget apt-transport-https telnet gnupg procps
+
+RUN echo Europe/Berlin > /etc/timezone && dpkg-reconfigure tzdata
+
+RUN wget -qO - https://debian.fhem.de/archive.key | apt-key add - && \
+	echo "deb http://debian.fhem.de/nightly/ /" | tee -a /etc/apt/sources.list.d/fhem.list
+	
+RUN touch /sbin/init
+
+#Update Repositorys and install basic fhem
+RUN apt-get update && apt-get -y install fhem
+
+#Delete User "FHEM" to run fhem with root rights
+RUN pkill -f "perl fhem.pl fhem.cfg" && \
+	update-rc.d -f fhem remove && \
+	chown -R root:root /opt/fhem/ && \
+	userdel fhem
+
+#Remove unnessesary packages and clean up basic installation
+RUN apt-get remove -y wget procps && \
+	apt-get clean  && apt-get autoclean && apt-get autoremove -y && cd / && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+#COPY start.sh File to Image
+COPY start.sh /start.sh
+# Create /opt/fhem/configDB.conf
+COPY configDB.conf /opt/fhem/configDB.conf
+# Create /opt/fhem/logDB.conf
+COPY logDB.conf /opt/fhem/logDB.conf
+
+#Add nofork param to fhem.cfg
+RUN sed -i 's/updateInBackground.*$/updateInBackground 0\r\nattr global nofork 1/' /opt/fhem/fhem.cfg
 
 #----------------------------------------------------------------------------------------------------------------------
 # Make a FULL Update of FHEM -> Cause the fhem-basic is not up to date
-RUN echo '\n\
-define InstallRoutine notify global:INITIALIZED sleep 5;;delete InstallRoutine;;save;;update;;sleep 5;;shutdown'\
->> /opt/fhem/fhem.cfg
+RUN echo '\n\define InstallRoutine notify global:INITIALIZED sleep 5;;delete InstallRoutine;;save;;update;;sleep 5;;shutdown' >> /opt/fhem/fhem.cfg;
 RUN perl fhem.pl fhem.cfg | tee /opt/fhem/log/fhem.log
 #----------------------------------------------------------------------------------------------------------------------
 
 #----------------------------------------------------------------------------------------------------------------------
 # Install all for fronthem
-RUN echo '\n\
-define InstallRoutine notify global:INITIALIZED sleep 5;;delete InstallRoutine;;save;;update force https://raw.githubusercontent.com/herrmannj/fronthem/master/controls_fronthem.txt;;sleep 5;;shutdown'\
->> /opt/fhem/fhem.cfg
-RUN perl fhem.pl fhem.cfg | tee /opt/fhem/log/fhem.log
+RUN if [ "$FHEM_FRONTHEM" = 1 ];\
+    then\
+    echo '++++++++++++++++++++++++++++++';\
+    echo '+FHEM - FRONTHEM INSTALLATION+';\
+    echo '++++++++++++++++++++++++++++++';\
+    sleep 1s;\
+    echo '\ndefine InstallRoutine notify global:INITIALIZED sleep 5;;delete InstallRoutine;;save;;update force https://raw.githubusercontent.com/herrmannj/fronthem/master/controls_fronthem.txt;;sleep 5;;shutdown' >> /opt/fhem/fhem.cfg;\
+    perl fhem.pl fhem.cfg | tee /opt/fhem/log/fhem.log;\
+    fi;
 #----------------------------------------------------------------------------------------------------------------------
 
 #----------------------------------------------------------------------------------------------------------------------
 #Install all for SQLITE. Create configDB and logDB
 #configDB will be in the seperated folder /opt/fhem/config
-RUN apt-get update && \
-apt-get -y install sqlite3 libdbi-perl libdbd-sqlite3-perl && \
-apt-get clean  && apt-get autoclean && apt-get autoremove -y && cd / && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-# Create the Config Folder and creates the logDB and configDB
-RUN mkdir /opt/fhem/config
-RUN echo "pragma auto_vacuum=2;" | sqlite3 /opt/fhem/config/configDB.db
-
-RUN echo "CREATE TABLE 'history' (TIMESTAMP TIMESTAMP, DEVICE varchar(64), TYPE varchar(64), EVENT varchar(512), READING varchar(64), VALUE varchar(128), UNIT varchar(32));\
-CREATE TABLE 'current' (TIMESTAMP TIMESTAMP, DEVICE varchar(64), TYPE varchar(64), EVENT varchar(512), READING varchar(64), VALUE varchar(128), UNIT varchar(32));\
-CREATE INDEX Search_Idx ON 'history' (DEVICE, READING, TIMESTAMP);"\
-| sqlite3 /opt/fhem/log/logDB.db
 
 # Create /opt/fhem/configDB.conf
 COPY configDB.conf /opt/fhem/configDB.conf
-
 # Create /opt/fhem/logDB.conf
 COPY logDB.conf /opt/fhem/logDB.conf
 
-# Create /opt/fhem/start.sh
-COPY start.sh /start.sh
+RUN if [ "$FHEM_SQLITE" = 1 ];\
+    then\
+    echo '++++++++++++++++++++++++++++++';\
+    echo '+FHEM - SQLLite - OS packages+';\
+    echo '++++++++++++++++++++++++++++++';\
+    sleep 1s;\
+    apt-get -y install sqlite3 libdbi-perl libdbd-sqlite3-perl && \
+    apt-get clean  && apt-get autoclean && apt-get autoremove -y && cd / && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*;\
+    fi;
+# Create the Config Folder and creates the logDB and configDB
+RUN if [ "$FHEM_SQLITE" = 1 ];\
+    then\
+    echo '++++++++++++++++++++++++++++++';\
+    echo '+FHEM - SQLLite - FHEM PART  +';\
+    echo '++++++++++++++++++++++++++++++';\
+    sleep 1s;\
+    mkdir /opt/fhem/config;\
+    echo "pragma auto_vacuum=2;" | sqlite3 /opt/fhem/config/configDB.db;\
+    echo "CREATE TABLE 'history' (TIMESTAMP TIMESTAMP, DEVICE varchar(64), TYPE varchar(64), EVENT varchar(512), READING varchar(64), VALUE varchar(128), UNIT varchar(32));\
+    CREATE TABLE 'current' (TIMESTAMP TIMESTAMP, DEVICE varchar(64), TYPE varchar(64), EVENT varchar(512), READING varchar(64), VALUE varchar(128), UNIT varchar(32));\
+    CREATE INDEX Search_Idx ON 'history' (DEVICE, READING, TIMESTAMP);"\
+    | sqlite3 /opt/fhem/log/logDB.db;\
+    fi;
 
 # UpdateOnStart -> update force for fronthem -> General update
 # ShutdownAfterUpdate -> after update delete UpdateOnStart + ShutdownAfterUpdate and migrate existing configuration into configDB
 # -> at the end..shutdown fhem
-RUN echo '\n\
-define InstallRoutine notify global:INITIALIZED sleep 5;;delete InstallRoutine;;save;;configdb migrate;;sleep 5;;shutdown'\
->> /opt/fhem/fhem.cfg
-
-#Run the current configuration to update FHEM internal -> Delete fhem.cfg, cause it is now configDB
-RUN perl fhem.pl fhem.cfg | tee /opt/fhem/log/fhem.log && \
-	rm /opt/fhem/fhem.cfg
+RUN if [ "$FHEM_SQLITE" = 1 ];\
+    then\
+    echo '+++++++++++++++++++++++++++++++++++++';\
+    echo '+FHEM - SQLLite - SQLLiteMigration  +';\
+    echo '+++++++++++++++++++++++++++++++++++++';\
+    sleep 1s;\
+    echo '\n\define InstallRoutine notify global:INITIALIZED sleep 5;;delete InstallRoutine;;save;;configdb migrate;;sleep 5;;shutdown' >> /opt/fhem/fhem.cfg;\
+    perl fhem.pl fhem.cfg | tee /opt/fhem/log/fhem.log && rm /opt/fhem/fhem.cfg;\
+    else\
+    rm /opt/fhem/configDB.conf;\
+    rm /opt/fhem/logDB.conf;\
+    fi;
 #----------------------------------------------------------------------------------------------------------------------
+
+CMD bash /start.sh $FHEM_SQLITE
