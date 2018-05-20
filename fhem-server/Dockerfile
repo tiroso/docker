@@ -34,6 +34,8 @@ COPY configDB.conf /opt/fhem/configDB.conf
 # Create /opt/fhem/logDB.conf
 COPY logDB.conf /opt/fhem/logDB.conf
 
+WORKDIR "/opt/fhem"
+
 #Add nofork param to fhem.cfg
 RUN sed -i 's/updateInBackground.*$/updateInBackground 0\r\nattr global nofork 1/' /opt/fhem/fhem.cfg
 
