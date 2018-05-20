@@ -15,6 +15,8 @@ RUN curl http://www.smartvisu.de/download/smartVISU_2.8.zip -o smartVISU_2.8.zip
     mv smartVISU/* ./sv/ && \
     rm -R smartVISU && \
     rm index.html
+    
+WORKDIR "/var/www/html/sv"
 
 RUN curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/master/readme.txt -o readme.txt && \
     curl https://raw.githubusercontent.com/herrmannj/smartvisu-cleaninstall/master/config.ini.default -o config.ini && \
