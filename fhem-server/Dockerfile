@@ -42,7 +42,7 @@ RUN sed -i 's/updateInBackground.*$/updateInBackground 0\r\nattr global nofork 1
 #----------------------------------------------------------------------------------------------------------------------
 # Make a FULL Update of FHEM -> Cause the fhem-basic is not up to date
 RUN echo '\n\define InstallRoutine notify global:INITIALIZED sleep 5;;delete InstallRoutine;;save;;update;;sleep 5;;shutdown' >> /opt/fhem/fhem.cfg;
-RUN perl fhem.pl /opt/fhem/fhem.cfg | tee /opt/fhem/log/fhem.log
+RUN /usr/bin/perl fhem.pl /opt/fhem/fhem.cfg | tee /opt/fhem/log/fhem.log
 #----------------------------------------------------------------------------------------------------------------------
 
 #----------------------------------------------------------------------------------------------------------------------
@@ -54,7 +54,7 @@ RUN if [ "$FHEM_FRONTHEM" = 1 ];\
     echo '++++++++++++++++++++++++++++++';\
     sleep 10s;\
     echo '\ndefine InstallRoutine notify global:INITIALIZED sleep 5;;delete InstallRoutine;;save;;update force https://raw.githubusercontent.com/herrmannj/fronthem/master/controls_fronthem.txt;;sleep 5;;shutdown' >> /opt/fhem/fhem.cfg;\
-    perl fhem.pl fhem.cfg | tee /opt/fhem/log/fhem.log;\
+    /usr/bin/perl fhem.pl fhem.cfg | tee /opt/fhem/log/fhem.log;\
     fi;
 #----------------------------------------------------------------------------------------------------------------------
 
