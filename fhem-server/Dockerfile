@@ -50,7 +50,7 @@ RUN if [ "$FHEM_FRONTHEM" = 1 ];\
     echo '++++++++++++++++++++++++++++++';\
     echo '+FHEM - FRONTHEM INSTALLATION+';\
     echo '++++++++++++++++++++++++++++++';\
-    sleep 1s;\
+    sleep 10s;\
     echo '\ndefine InstallRoutine notify global:INITIALIZED sleep 5;;delete InstallRoutine;;save;;update force https://raw.githubusercontent.com/herrmannj/fronthem/master/controls_fronthem.txt;;sleep 5;;shutdown' >> /opt/fhem/fhem.cfg;\
     perl fhem.pl fhem.cfg | tee /opt/fhem/log/fhem.log;\
     fi;
@@ -70,7 +70,7 @@ RUN if [ "$FHEM_SQLITE" = 1 ];\
     echo '++++++++++++++++++++++++++++++';\
     echo '+FHEM - SQLLite - OS packages+';\
     echo '++++++++++++++++++++++++++++++';\
-    sleep 1s;\
+    sleep 10s;\
     apt-get -y install sqlite3 libdbi-perl libdbd-sqlite3-perl && \
     apt-get clean  && apt-get autoclean && apt-get autoremove -y && cd / && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*;\
     fi;
@@ -80,7 +80,7 @@ RUN if [ "$FHEM_SQLITE" = 1 ];\
     echo '++++++++++++++++++++++++++++++';\
     echo '+FHEM - SQLLite - FHEM PART  +';\
     echo '++++++++++++++++++++++++++++++';\
-    sleep 1s;\
+    sleep 10s;\
     mkdir /opt/fhem/config;\
     echo "pragma auto_vacuum=2;" | sqlite3 /opt/fhem/config/configDB.db;\
     echo "CREATE TABLE 'history' (TIMESTAMP TIMESTAMP, DEVICE varchar(64), TYPE varchar(64), EVENT varchar(512), READING varchar(64), VALUE varchar(128), UNIT varchar(32));\
@@ -97,7 +97,7 @@ RUN if [ "$FHEM_SQLITE" = 1 ];\
     echo '+++++++++++++++++++++++++++++++++++++';\
     echo '+FHEM - SQLLite - SQLLiteMigration  +';\
     echo '+++++++++++++++++++++++++++++++++++++';\
-    sleep 1s;\
+    sleep 10s;\
     echo '\n\define InstallRoutine notify global:INITIALIZED sleep 5;;delete InstallRoutine;;save;;configdb migrate;;sleep 5;;shutdown' >> /opt/fhem/fhem.cfg;\
     perl fhem.pl fhem.cfg | tee /opt/fhem/log/fhem.log && rm /opt/fhem/fhem.cfg;\
     else\
