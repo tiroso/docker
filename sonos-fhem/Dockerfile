@@ -41,4 +41,6 @@ RUN echo '\ndefine InstallRoutine notify global:INITIALIZED sleep 5;;delete Inst
 RUN /usr/bin/perl fhem.pl -d /opt/fhem/fhem.cfg | tee /opt/fhem/log/fhem_init_start.log
 #----------------------------------------------------------------------------------------------------------------------
 
-ENTRYPOINT ["/usr/bin/perl","/opt/fhem/00_SONOS.pm","4711","1","1"]
+#COPY start.sh File to Image
+COPY start.sh /start.sh
+ENTRYPOINT ["bash","/start.sh"]
