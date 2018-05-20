@@ -14,7 +14,7 @@
 </p>
 <h4>With persistent Data</h4>
 <p>
-  <code>docker volume create fhem-server</code>
+  <code>docker volume create fhem-server</code><br>
   <code>docker run --restart always -d --name fhem-server --mount source=fhem-server,target=/opt/fhem --publish "8083:8083" own/fhem-server:normal</code><br>
-  <i>You can choose the image by changing tag. -> own/fhem-server:normal or own/fhem-server:sqlite</i>
+  <sup>You can choose the image by changing tag. -> own/fhem-server:normal or own/fhem-server:sqlite</sup>
 </p>
