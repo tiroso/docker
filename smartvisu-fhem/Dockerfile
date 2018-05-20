@@ -11,7 +11,7 @@ RUN mkdir -p /etc/nginx \
 
 COPY nginx.conf /etc/nginx
 
-RUN git clone https://github.com/Martin-Gleiss/smartvisu.git --single-branch --branch $SHNG_SMARTVISU_BRANCH /var/www/html
+RUN git clone https://github.com/Martin-Gleiss/smartvisu.git --single-branch --branch "v2.8" /var/www/html
 
 WORKDIR "/var/www/html/smartvisu"
 
