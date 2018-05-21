@@ -88,8 +88,7 @@ RUN if [ "$FHEM_SQLITE" = 1 ];\
     echo '+FHEM - SQLLite - FHEM PART  +';\
     echo '++++++++++++++++++++++++++++++';\
     sleep 10s;\
-    mkdir /opt/fhem/config;\
-    echo "pragma auto_vacuum=2;" | sqlite3 /opt/fhem/config/configDB.db;\
+    echo "pragma auto_vacuum=2;" | sqlite3 /opt/fhem/configDB.db;\
     echo "CREATE TABLE 'history' (TIMESTAMP TIMESTAMP, DEVICE varchar(64), TYPE varchar(64), EVENT varchar(512), READING varchar(64), VALUE varchar(128), UNIT varchar(32));\
     CREATE TABLE 'current' (TIMESTAMP TIMESTAMP, DEVICE varchar(64), TYPE varchar(64), EVENT varchar(512), READING varchar(64), VALUE varchar(128), UNIT varchar(32));\
     CREATE INDEX Search_Idx ON 'history' (DEVICE, READING, TIMESTAMP);"\
@@ -106,10 +105,7 @@ RUN if [ "$FHEM_SQLITE" = 1 ];\
     echo '+++++++++++++++++++++++++++++++++++++';\
     sleep 10s;\
     echo '\ndefine InstallRoutine notify global:INITIALIZED sleep 5;;delete InstallRoutine;;save;;configdb migrate;;sleep 5;;shutdown' >> /opt/fhem/fhem.cfg;\
-    perl fhem.pl -d fhem.cfg | tee /opt/fhem/log/fhem_sqlite_install.log && rm /opt/fhem/fhem.cfg;\
-    else\
-    rm /opt/fhem/configDB.conf;\
-    rm /opt/fhem/logDB.conf;\
+    perl fhem.pl -d fhem.cfg | tee /opt/fhem/log/fhem_sqlite_install.log;\
     fi;
 #----------------------------------------------------------------------------------------------------------------------
 ENTRYPOINT ["bash","/start.sh"]
