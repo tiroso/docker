@@ -5,11 +5,6 @@ MAINTAINER Tim Sobisch
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
 
-ARG FHEM_FRONTHEM=0
-ARG FHEM_SQLITE=1
-
-ENV FHEM_SQLITE=${FHEM_SQLITE}
-
 RUN apt-get update && apt-get -y install apt-utils wget apt-transport-https telnet gnupg procps
 
 RUN echo Europe/Berlin > /etc/timezone && dpkg-reconfigure tzdata
@@ -51,19 +46,6 @@ RUN /usr/bin/perl fhem.pl -d /opt/fhem/fhem.cfg | tee /opt/fhem/log/fhem_init_st
 #----------------------------------------------------------------------------------------------------------------------
 
 #----------------------------------------------------------------------------------------------------------------------
-# Install all for fronthem
-RUN if [ "$FHEM_FRONTHEM" = 1 ];\
-    then\
-    echo '++++++++++++++++++++++++++++++';\
-    echo '+FHEM - FRONTHEM INSTALLATION+';\
-    echo '++++++++++++++++++++++++++++++';\
-    sleep 10s;\
-    echo '\ndefine InstallRoutine notify global:INITIALIZED sleep 5;;delete InstallRoutine;;save;;update force https://raw.githubusercontent.com/herrmannj/fronthem/master/controls_fronthem.txt;;sleep 5;;shutdown' >> /opt/fhem/fhem.cfg;\
-    /usr/bin/perl fhem.pl fhem.cfg | tee /opt/fhem/log/fhem_fronthem_install.log;\
-    fi;
-#----------------------------------------------------------------------------------------------------------------------
-
-#----------------------------------------------------------------------------------------------------------------------
 #Install all for SQLITE. Create configDB and logDB
 #configDB will be in the seperated folder /opt/fhem/config
 
@@ -72,40 +54,22 @@ COPY configDB.conf /opt/fhem/configDB.conf
 # Create /opt/fhem/logDB.conf
 COPY logDB.conf /opt/fhem/logDB.conf
 
-RUN if [ "$FHEM_SQLITE" = 1 ];\
-    then\
-    echo '++++++++++++++++++++++++++++++';\
-    echo '+FHEM - SQLLite - OS packages+';\
-    echo '++++++++++++++++++++++++++++++';\
-    sleep 10s;\
-    apt-get -y install sqlite3 libdbi-perl libdbd-sqlite3-perl && \
-    apt-get clean  && apt-get autoclean && apt-get autoremove -y && cd / && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*;\
-    fi;
+RUN apt-get -y install sqlite3 libdbi-perl libdbd-sqlite3-perl && \
+    apt-get clean  && apt-get autoclean && apt-get autoremove -y && cd / && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*;
+    
 # Create the Config Folder and creates the logDB and configDB
-RUN if [ "$FHEM_SQLITE" = 1 ];\
-    then\
-    echo '++++++++++++++++++++++++++++++';\
-    echo '+FHEM - SQLLite - FHEM PART  +';\
-    echo '++++++++++++++++++++++++++++++';\
-    sleep 10s;\
-    echo "pragma auto_vacuum=2;" | sqlite3 /opt/fhem/configDB.db;\
+RUN echo "pragma auto_vacuum=2;" | sqlite3 /opt/fhem/configDB.db && \
     echo "CREATE TABLE 'history' (TIMESTAMP TIMESTAMP, DEVICE varchar(64), TYPE varchar(64), EVENT varchar(512), READING varchar(64), VALUE varchar(128), UNIT varchar(32));\
     CREATE TABLE 'current' (TIMESTAMP TIMESTAMP, DEVICE varchar(64), TYPE varchar(64), EVENT varchar(512), READING varchar(64), VALUE varchar(128), UNIT varchar(32));\
     CREATE INDEX Search_Idx ON 'history' (DEVICE, READING, TIMESTAMP);"\
-    | sqlite3 /opt/fhem/log/logDB.db;\
-    fi;
+    | sqlite3 /opt/fhem/log/logDB.db;
 
 # UpdateOnStart -> update force for fronthem -> General update
 # ShutdownAfterUpdate -> after update delete UpdateOnStart + ShutdownAfterUpdate and migrate existing configuration into configDB
 # -> at the end..shutdown fhem
-RUN if [ "$FHEM_SQLITE" = 1 ];\
-    then\
-    echo '+++++++++++++++++++++++++++++++++++++';\
-    echo '+FHEM - SQLLite - SQLLiteMigration  +';\
-    echo '+++++++++++++++++++++++++++++++++++++';\
-    sleep 10s;\
-    echo '\ndefine InstallRoutine notify global:INITIALIZED sleep 5;;delete InstallRoutine;;save;;configdb migrate;;sleep 5;;shutdown' >> /opt/fhem/fhem.cfg;\
+RUN echo '\ndefine InstallRoutine notify global:INITIALIZED sleep 5;;delete InstallRoutine;;save;;configdb migrate;;sleep 5;;shutdown' >> /opt/fhem/fhem.cfg && \
     perl fhem.pl -d fhem.cfg | tee /opt/fhem/log/fhem_sqlite_install.log;\
-    fi;
 #----------------------------------------------------------------------------------------------------------------------
+
+RUN mkdir /opt/fhemorigin && mv /opt/fhem/* /opt/fhemorigin
 ENTRYPOINT ["bash","/start.sh"]
