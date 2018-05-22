@@ -68,7 +68,7 @@ RUN echo "pragma auto_vacuum=2;" | sqlite3 /opt/fhem/configDB.db && \
 # ShutdownAfterUpdate -> after update delete UpdateOnStart + ShutdownAfterUpdate and migrate existing configuration into configDB
 # -> at the end..shutdown fhem
 RUN echo '\ndefine InstallRoutine notify global:INITIALIZED sleep 5;;delete InstallRoutine;;save;;configdb migrate;;sleep 5;;shutdown' >> /opt/fhem/fhem.cfg && \
-    perl fhem.pl -d fhem.cfg | tee /opt/fhem/log/fhem_sqlite_install.log;\
+    perl fhem.pl -d fhem.cfg | tee /opt/fhem/log/fhem_sqlite_install.log;
 #----------------------------------------------------------------------------------------------------------------------
 
 RUN mkdir /opt/fhemorigin && mv /opt/fhem/* /opt/fhemorigin
