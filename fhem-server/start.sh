@@ -4,8 +4,15 @@ set -e
 cd /opt/fhem
 port=7072
 
+if [ -e "/opt/fhemorigin/fhem.pl" ]
+then
+mv /opt/fhemorigin/* /opt/fhem;
+rm /opt/fhemorigin -R;
+echo '\ndefine InstallRoutine notify global:INITIALIZED sleep 1;;delete InstallRoutine;;save;;update;;sleep 1;;shutdown' >> /opt/fhem/fhem.cfg;
+/usr/bin/perl fhem.pl -d /opt/fhem/fhem.cfg | tee /opt/fhem/log/fhem_init_start.log;
+fi;
 
-if [ "$FHEM_SQLITE" = 1 ];
+if [ "$1" = "sqlite" ];
 then 
 echo "Starte FHEM - SQLITE";
 perl fhem.pl configDB;
