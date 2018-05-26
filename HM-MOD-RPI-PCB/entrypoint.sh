@@ -9,6 +9,7 @@ git clone git://git.zerfleddert.de/hmcfgusb
 cd hmcfgusb/
 make
 if [ "$1" = "newest" ];
+then
 # Firmware runterladen
 wget https://raw.githubusercontent.com/eq-3/occu/HEAD/firmware/HM-MOD-UART/coprocessor_update.eq3;
 else
