@@ -72,4 +72,5 @@ RUN echo '\ndefine InstallRoutine notify global:INITIALIZED sleep 5;;delete Inst
 #----------------------------------------------------------------------------------------------------------------------
 
 RUN mkdir /opt/fhemorigin && mv /opt/fhem/* /opt/fhemorigin
-ENTRYPOINT ["bash","/start.sh"]
+ENTRYPOINT ["/start.sh"]
+CMD []
