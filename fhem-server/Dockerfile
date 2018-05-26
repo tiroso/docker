@@ -28,8 +28,7 @@ RUN apt-get remove -y wget procps && \
 	apt-get clean  && apt-get autoclean && apt-get autoremove -y && cd / && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 #COPY start.sh File to Image
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
+COPY entrypoint.sh /entrypoint.sh
 # Create /opt/fhem/configDB.conf
 COPY configDB.conf /opt/fhem/configDB.conf
 # Create /opt/fhem/logDB.conf
@@ -73,5 +72,4 @@ RUN echo '\ndefine InstallRoutine notify global:INITIALIZED sleep 5;;delete Inst
 #----------------------------------------------------------------------------------------------------------------------
 
 RUN mkdir /opt/fhemorigin && mv /opt/fhem/* /opt/fhemorigin
-ENTRYPOINT ["/start.sh"]
-CMD []
+ENTRYPOINT ["bash","/entrypoint.sh"]
