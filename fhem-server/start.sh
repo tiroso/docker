@@ -4,8 +4,11 @@ set -e
 cd /opt/fhem
 port=7072
 
-if [ -e "/opt/fhemorigin/fhem.pl" ]
+if [ -e "/opt/fhem/fhem.pl" ]
 then
+echo "Existing FHEM";
+rm /opt/fhemorigin -R;
+else
 mv /opt/fhemorigin/* /opt/fhem;
 rm /opt/fhemorigin -R;
 echo '\ndefine InstallRoutine notify global:INITIALIZED sleep 1;;delete InstallRoutine;;save;;update;;sleep 1;;shutdown' >> /opt/fhem/fhem.cfg;
