@@ -29,6 +29,7 @@ RUN apt-get remove -y wget procps && \
 
 #COPY start.sh File to Image
 COPY start.sh /start.sh
+RUN chmod +x /start.sh
 # Create /opt/fhem/configDB.conf
 COPY configDB.conf /opt/fhem/configDB.conf
 # Create /opt/fhem/logDB.conf
