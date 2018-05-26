@@ -11,7 +11,7 @@ rm /opt/fhemorigin -R;
 else
 mv /opt/fhemorigin/* /opt/fhem;
 rm /opt/fhemorigin -R;
-echo '\ndefine InstallRoutine notify global:INITIALIZED sleep 1;;delete InstallRoutine;;save;;update;;sleep 1;;shutdown' >> /opt/fhem/fhem.cfg;
+echo 'define InstallRoutine notify global:INITIALIZED sleep 1;;delete InstallRoutine;;save;;update;;sleep 1;;shutdown' >> /opt/fhem/fhem.cfg;
 /usr/bin/perl fhem.pl -d /opt/fhem/fhem.cfg | tee /opt/fhem/log/fhem_init_start.log;
 fi;
 
