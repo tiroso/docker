@@ -15,3 +15,7 @@ RUN echo 'core_freq=250' >> /boot/config.txt
 RUN sed -i '/console=serial0,115200/d' /boot/cmdline.txt
 
 RUN systemctl disable serial-getty@ttyAMA0.service
+
+#COPY start.sh File to Image
+COPY entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["bash","/entrypoint.sh"]
