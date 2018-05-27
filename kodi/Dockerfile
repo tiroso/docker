@@ -9,9 +9,9 @@ RUN apt-get update && apt-get install rpi-update
 
 RUN rpi-update
 
-RUN reboot
+#RUN reboot
 
-RUN apt-get update && apt-get upgrade
+#RUN apt-get update && apt-get upgrade
 
 RUN apt-get update && apt-get install kodi libegl1-mesa libgles2-mesa
 
