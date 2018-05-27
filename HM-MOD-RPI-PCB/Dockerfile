@@ -5,8 +5,7 @@ MAINTAINER Tim Sobisch
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
 
-RUN apt-get update
-RUN apt-get -y install libusb-1.0-0-dev build-essential git wget socat
+RUN apt-get update && apt-get -y install libusb-1.0-0-dev build-essential git wget socat
 
 RUN systemctl disable serial-getty@ttyAMA0.service
 
