@@ -5,6 +5,7 @@ set -e
 if [ "$1" = "flash" ];
 then 
 echo "FLASHING CONTAINER";
+cd /hmcfgusb/
 if [ "$1" = "newest" ];
 then
 # Firmware runterladen
