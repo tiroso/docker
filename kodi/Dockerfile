@@ -11,4 +11,6 @@ RUN rpi-update
 
 COPY rdp.conf /etc/ld.so.conf.d/rbp.conf
 
+RUN ldconfig
+
 ENTRYPOINT ["bash", "/usr/bin/kodi-standalone"]
