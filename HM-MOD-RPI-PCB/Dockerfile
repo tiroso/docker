@@ -2,8 +2,7 @@ FROM resin/rpi-raspbian:stretch
 
 MAINTAINER Tim Sobisch
 
-ENV DEBIAN_FRONTEND noninteractive
-ENV TERM xterm
+RUN [ "cross-build-start" ]
 
 RUN apt-get update && apt-get -y install libusb-1.0-0-dev build-essential git wget socat
 
