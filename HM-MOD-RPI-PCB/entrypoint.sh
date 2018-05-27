@@ -5,9 +5,6 @@ set -e
 if [ "$1" = "flash" ];
 then 
 echo "FLASHING CONTAINER";
-git clone git://git.zerfleddert.de/hmcfgusb
-cd hmcfgusb/
-make
 if [ "$1" = "newest" ];
 then
 # Firmware runterladen
