@@ -12,14 +12,14 @@ On Raspberry Pi 3 also add following lines:
 </ul>
 </p>
 
-<h2>Build</h2>
+<h2>Build own image</h2>
 <p><code>sudo docker build https://github.com/tiroso/docker.git#master:HM-MOD-RPI-PCB --tag hmlan</code></p>
 
 <h2>Pull</h2>
-<p><code>sudo docker pull tiroso/HM-MOD-RPI-PCB</code></p>
+<p><code>sudo docker pull tiroso/hm-mod-rpi-pcb</code></p>
 
 <h2>Run with flash</h2>
-<p><code>sudo docker run --rm --device=/dev/ttyAMA0 --device /dev/gpiomem hmlan flash</code></p>
+<p><code>sudo docker run --rm --device=/dev/ttyAMA0 --device /dev/gpiomem tiroso/hm-mod-rpi-pcb flash</code></p>
 
 <h2>Run normal (socat)</h2>
-<p><code>docker run -d --restart always --name hmlan --device=/dev/ttyAMA0 --device /dev/gpiomem --publish "2000:2000" hmlan</code></p>
+<p><code>docker run -d --restart always --name hmlan --device=/dev/ttyAMA0 --device /dev/gpiomem --publish "2000:2000" tiroso/hm-mod-rpi-pcb</code></p>
