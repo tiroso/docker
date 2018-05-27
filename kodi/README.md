@@ -11,6 +11,3 @@ if you want to use zattoo
 
 use omx player
 
-
-TURN Off ipv6 for scapper
-I turned it off using "/etc/sysctl.conf", by adding the line "net.ipv6.conf.all.disable_ipv6 = 1"
