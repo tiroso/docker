@@ -15,6 +15,9 @@ On Raspberry Pi 3 also add following lines:
 <h2>Build</h2>
 <p><code>sudo docker build https://github.com/tiroso/docker.git#master:HM-MOD-RPI-PCB --tag hmlan</code></p>
 
+<h2>Pull</h2>
+<p><code>sudo docker pull tiroso/HM-MOD-RPI-PCB</code></p>
+
 <h2>Run with flash</h2>
 <p><code>sudo docker run --rm --device=/dev/ttyAMA0 --device /dev/gpiomem hmlan flash</code></p>
 
