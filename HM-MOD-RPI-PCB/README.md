@@ -11,6 +11,11 @@ On Raspberry Pi 3 also add following lines:
 <li><code>core_freq=250</code></li>
 </ul>
 </p>
+<p>Delete following entry in "/boot/cmdline.txt":
+  <ul>
+<li><code>console=serial0,115200</code></li>
+</ul>
+</p>
 
 <h2>Build own image</h2>
 <p><code>sudo docker build https://github.com/tiroso/docker.git#master:HM-MOD-RPI-PCB --tag tiroso/hm-mod-rpi-pcb</code></p>
