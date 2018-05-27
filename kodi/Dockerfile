@@ -7,9 +7,8 @@ ENV TERM xterm
 
 RUN apt-get update && apt-get install kodi supervisor
 
-COPY supervisord.conf /etc/supervisor/supervisord.conf
-COPY supervisord.conf /etc/supervisord.conf
+RUN rpi-update
 
-#ENTRYPOINT ["kodi"]
-#ENTRYPOINT ["/usr/bin/supervisord","-c","/etc/supervisor/supervisord.conf"]
+COPY rdp.conf /etc/ld.so.conf.d/rbp.conf
+
 ENTRYPOINT ["bash", "/usr/bin/kodi-standalone"]
