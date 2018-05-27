@@ -5,7 +5,7 @@ MAINTAINER Tim Sobisch
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
 
-RUN apt-get update && apt-get install kodi supervisor
+RUN apt-get update && apt-get install kodi libegl1-mesa libegl2-mesa
 
 RUN rpi-update
 
