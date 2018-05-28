@@ -11,9 +11,7 @@ COPY entrypoint.sh /entrypoint.sh
 WORKDIR "/"
 
 RUN apt-get update && \
-  apt-get -y --no-install-recommends install git socat && \
-  git clone git://git.zerfleddert.de/hmcfgusb hmcfgusb && \
-  apt-get -y purge git && \
+  apt-get -y --no-install-recommends install socat && \
   apt-get autoremove && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
