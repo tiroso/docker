@@ -5,15 +5,17 @@ MAINTAINER Tim Sobisch
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
 
-RUN apt-get update && apt-get -y install libusb-1.0-0-dev build-essential git wget socat
-
-RUN systemctl disable serial-getty@ttyAMA0.service
+#COPY entrypoint.sh File to Image
+COPY entrypoint.sh /entrypoint.sh
 
 WORKDIR "/"
-RUN git clone git://git.zerfleddert.de/hmcfgusb
-WORKDIR "/hmcfgusb"
-RUN make
 
-#COPY start.sh File to Image
-COPY entrypoint.sh /entrypoint.sh
+RUN apt-get update && \
+  apt-get -y install libusb-1.0-0-dev build-essential git wget socat && \
+  systemctl disable serial-getty@ttyAMA0.service && \
+  git clone git://git.zerfleddert.de/hmcfgusb hmcfgusb && \
+  cd hmcfgusb && \
+  make && \
+  rm -rf /var/lib/apt/lists/*
+
 ENTRYPOINT ["bash","/entrypoint.sh"]
