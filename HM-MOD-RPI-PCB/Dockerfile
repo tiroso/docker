@@ -15,7 +15,7 @@ RUN apt-get update && \
   git clone git://git.zerfleddert.de/hmcfgusb hmcfgusb && \
   cd hmcfgusb && \
   make && \
-  apt-get -y purge git && \
+  apt-get -y purge git perl python python3 && \
   apt-get autoremove && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
