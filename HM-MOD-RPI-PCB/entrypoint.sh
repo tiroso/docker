@@ -5,7 +5,9 @@ set -e
 if [ "$1" = "flash" ];
 then 
 echo "FLASHING CONTAINER";
+apt-get update && apt-get -y --no-install-recommends install libusb-1.0-0-dev build-essential wget
 cd /hmcfgusb/
+make
 if [ "$1" = "newest" ];
 then
 # Firmware runterladen
