@@ -4,7 +4,7 @@ set -e
 
 if [ "$1" = "flash" ];
 then 
-apk add --update --no-cache libusb=1.0.0 build-base wget git ca-certificates
+apk add --update --no-cache libusb build-base wget git ca-certificates
 cd / && git clone git://git.zerfleddert.de/hmcfgusb hmcfgusb && \
 cd /hmcfgusb/
 make
