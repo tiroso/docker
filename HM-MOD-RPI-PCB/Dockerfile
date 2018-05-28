@@ -10,4 +10,4 @@ RUN apk add --update \
 		socat && \ 
 		rm -rf /var/cache/apk/*
   
-  ENTRYPOINT ["bash","/entrypoint.sh"]
+  ENTRYPOINT ["/bin/sh","/entrypoint.sh"]
