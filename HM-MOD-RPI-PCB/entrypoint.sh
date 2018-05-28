@@ -4,8 +4,7 @@ set -e
 
 if [ "$1" = "flash" ];
 then 
-echo "FLASHING CONTAINER";
-apt-get update && apt-get -y --no-install-recommends install libusb-1.0-0-dev build-essential wget git ca-certificates
+apt add --update --no-cache libusb=1.0.0 build-base wget git ca-certificates
 cd / && git clone git://git.zerfleddert.de/hmcfgusb hmcfgusb && \
 cd /hmcfgusb/
 make
