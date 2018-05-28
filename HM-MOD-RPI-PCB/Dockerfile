@@ -1,4 +1,4 @@
-FROM debian:stretch-lite
+FROM debian:stretch-slim
 
 MAINTAINER Tim Sobisch
 
