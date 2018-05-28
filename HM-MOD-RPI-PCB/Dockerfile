@@ -11,7 +11,7 @@ COPY entrypoint.sh /entrypoint.sh
 WORKDIR "/"
 
 RUN apt-get update && \
-  apt-get -y install libusb-1.0-0-dev build-essential git wget socat && \
+  apt-get -y --no-install-recommends install libusb-1.0-0-dev build-essential git wget socat && \
   systemctl disable serial-getty@ttyAMA0.service && \
   git clone git://git.zerfleddert.de/hmcfgusb hmcfgusb && \
   cd hmcfgusb && \
