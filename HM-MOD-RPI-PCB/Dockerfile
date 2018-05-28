@@ -17,6 +17,7 @@ RUN apt-get update && \
   cd hmcfgusb && \
   make && \
   apt-get -y purge git && \
+  apt-get autoremove && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
 
