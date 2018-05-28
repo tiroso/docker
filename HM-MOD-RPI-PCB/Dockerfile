@@ -16,6 +16,8 @@ RUN apt-get update && \
   git clone git://git.zerfleddert.de/hmcfgusb hmcfgusb && \
   cd hmcfgusb && \
   make && \
+  apt-get -y purge git && \
+  apt-get clean
   rm -rf /var/lib/apt/lists/*
 
 ENTRYPOINT ["bash","/entrypoint.sh"]
