@@ -17,7 +17,7 @@ RUN apt-get update && \
   cd hmcfgusb && \
   make && \
   apt-get -y purge git && \
-  apt-get clean
+  apt-get clean && \
   rm -rf /var/lib/apt/lists/*
 
 ENTRYPOINT ["bash","/entrypoint.sh"]
