@@ -1,4 +1,4 @@
-FROM resin/rpi-raspbian:stretch
+FROM debian:stretch-slim
 
 MAINTAINER Tim Sobisch
 
