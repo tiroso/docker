@@ -7,7 +7,7 @@ RUN apk add --update \
 		raspberrypi \
 		raspberrypi-libs \
 		raspberrypi-dev \
-		socat
-	&& rm -rf /var/cache/apk/*
+		socat && \ 
+		rm -rf /var/cache/apk/*
   
   ENTRYPOINT ["bash","/entrypoint.sh"]
