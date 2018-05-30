@@ -9,8 +9,8 @@ ENV TERM xterm
 RUN touch /sbin/init
 	&& wget -qO - https://debian.fhem.de/archive.key | apt-key add -  \
 	&& echo "deb http://debian.fhem.de/nightly/ /" | tee -a /etc/apt/sources.list.d/fhem.list \
-	&& apt-get update 
-	&& apt-get -y install 
+	&& apt-get update \
+	&& apt-get -y install \
 		apt-utils 
 		build-essential \
 		dfu-programmer \
@@ -18,33 +18,32 @@ RUN touch /sbin/init
 		snmp \
 		snmpd \
 		usbutils \
-		wget 
-		apt-transport-https 
-		telnet 
-		gnupg 
-		procps
-		fhem
-		sqlite3 
-		libdbi-perl 
-		libdbd-sqlite3-perl
-		libwww-perl libsoap-lite-perl libxml-parser-perl
+		wget  \
+		apt-transport-https  \
+		telnet  \
+		gnupg  \
+		procps \
+		fhem \
+		sqlite3  \
+		libdbi-perl \ 
+		libdbd-sqlite3-perl \
+		libwww-perl libsoap-lite-perl libxml-parser-perl \
 	&& pkill -f "fhem.pl" \
 	&& update-rc.d -f fhem remove \
 	&& chown -R root:root /opt/fhem/ \
-	&& userdel fhem
-	&& apt-get remove -y wget procps && \
-	&& apt-get clean  
-	&& apt-get autoclean 
-	&& apt-get autoremove -y 
+	&& userdel fhem \
+	&& apt-get clean  \
+	&& apt-get autoclean  \
+	&& apt-get autoremove -y  \
 	&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN echo "pragma auto_vacuum=2;" | sqlite3 /opt/fhem/configDB.db && \
-    echo "CREATE TABLE 'history' (TIMESTAMP TIMESTAMP, DEVICE varchar(64), TYPE varchar(64), EVENT varchar(512), READING varchar(64), VALUE varchar(128), UNIT varchar(32));\
+RUN echo "pragma auto_vacuum=2;" | sqlite3 /opt/fhem/configDB.db \
+    && echo "CREATE TABLE 'history' (TIMESTAMP TIMESTAMP, DEVICE varchar(64), TYPE varchar(64), EVENT varchar(512), READING varchar(64), VALUE varchar(128), UNIT varchar(32));\
     CREATE TABLE 'current' (TIMESTAMP TIMESTAMP, DEVICE varchar(64), TYPE varchar(64), EVENT varchar(512), READING varchar(64), VALUE varchar(128), UNIT varchar(32));\
     CREATE INDEX Search_Idx ON 'history' (DEVICE, READING, TIMESTAMP);"\
     | sqlite3 /opt/fhem/log/logDB.db;
 
-RUN sed -i 's/updateInBackground.*$/updateInBackground 0\r\nattr global nofork 1/' /opt/fhem/fhem.cfg
+RUN sed -i 's/updateInBackground.*$/updateInBackground 0\r\nattr global nofork 1/' /opt/fhem/fhem.cfg \
 	&& echo '\ndefine InstallRoutine notify global:INITIALIZED sleep 1;;delete InstallRoutine;;save;;configdb migrate;;sleep 1;;shutdown' >> /opt/fhem/fhem.cfg  \
 	&& perl fhem.pl -d fhem.cfg | tee /opt/fhem/log/fhem_sqlite_install.log;
 
