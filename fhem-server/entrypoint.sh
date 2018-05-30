@@ -1,6 +1,7 @@
 #!/usr/bin bash
 
 set -e
+chown -R root /opt 
 cd /opt/fhem
 port=7072
 
