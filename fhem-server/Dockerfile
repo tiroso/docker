@@ -38,6 +38,13 @@ RUN touch /sbin/init \
 	&& apt-get autoclean  \
 	&& apt-get autoremove -y  \
 	&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+	
+#COPY start.sh File to Image
+COPY entrypoint.sh /entrypoint.sh
+# Create /opt/fhem/configDB.conf
+COPY configDB.conf /opt/fhem/configDB.conf
+# Create /opt/fhem/logDB.conf
+COPY logDB.conf /opt/fhem/logDB.conf
 
 RUN echo "pragma auto_vacuum=2;" | sqlite3 /opt/fhem/configDB.db \
     && echo "CREATE TABLE 'history' (TIMESTAMP TIMESTAMP, DEVICE varchar(64), TYPE varchar(64), EVENT varchar(512), READING varchar(64), VALUE varchar(128), UNIT varchar(32));\
