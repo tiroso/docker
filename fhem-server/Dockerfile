@@ -11,7 +11,7 @@ RUN touch /sbin/init \
 	&& echo "deb http://debian.fhem.de/nightly/ /" | tee -a /etc/apt/sources.list.d/fhem.list \
 	&& apt-get update \
 	&& apt-get -y install \
-		apt-utils 
+		apt-utils  \
 		build-essential \
 		dfu-programmer \
 		etherwake \
