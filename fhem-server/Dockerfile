@@ -18,11 +18,8 @@ RUN touch /sbin/init \
 		snmp \
 		snmpd \
 		usbutils \
-		wget  \
 		apt-transport-https  \
 		telnet  \
-		gnupg  \
-		procps \
 		fhem \
 		sqlite3  \
 		libdbi-perl \ 
