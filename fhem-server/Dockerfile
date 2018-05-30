@@ -57,5 +57,5 @@ RUN sed -i 's/updateInBackground.*$/updateInBackground 0\r\nattr global nofork 1
 	&& echo '\ndefine InstallRoutine notify global:INITIALIZED sleep 1;;delete InstallRoutine;;save;;configdb migrate;;sleep 1;;shutdown' >> /opt/fhem/fhem.cfg  \
 	&& perl fhem.pl -d fhem.cfg | tee /opt/fhem/log/fhem_sqlite_install.log;
 
-RUN mkdir /opt/fhemorigin && mv /opt/fhem/* /opt/fhemorigin
+RUN mkdir /opt/fhemorigin && mv /opt/fhem/* /opt/fhemorigin && rm /opt/fhemorigin/log/*.log
 ENTRYPOINT ["bash","/entrypoint.sh"]
