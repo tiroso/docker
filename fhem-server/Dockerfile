@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
 
 
-RUN touch /sbin/init
+RUN touch /sbin/init \
 	&& wget -qO - https://debian.fhem.de/archive.key | apt-key add -  \
 	&& echo "deb http://debian.fhem.de/nightly/ /" | tee -a /etc/apt/sources.list.d/fhem.list \
 	&& apt-get update \
