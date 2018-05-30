@@ -10,7 +10,7 @@ RUN touch /sbin/init \
 	&& apt-get update \
 	&& apt-get -y install \
 		apt-utils  \
-		pkill \
+		procps \
 		wget \
 		gnupg \
 		build-essential \
