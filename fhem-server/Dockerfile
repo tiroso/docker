@@ -29,8 +29,8 @@ RUN touch /sbin/init \
 	&& echo "deb http://debian.fhem.de/nightly/ /" | tee -a /etc/apt/sources.list.d/fhem.list \
 	&& apt-get update \
 	&& apt-get -y install \
-		fhem \
-	&& pkill -f "fhem.pl" \
+		fhem 
+RUN pkill -f "fhem.pl" \
 	&& update-rc.d -f fhem remove \
 	&& chown -R root:root /opt/fhem/ \
 	&& userdel fhem \
