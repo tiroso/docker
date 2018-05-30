@@ -32,7 +32,6 @@ RUN touch /sbin/init \
 		fhem 
 RUN pkill -f "fhem.pl" \
 	&& update-rc.d -f fhem remove \
-	&& chown -R root:root /opt/fhem/ \
 	&& userdel fhem \
 	&& apt-get clean  \
 	&& apt-get autoclean  \
@@ -57,5 +56,5 @@ RUN sed -i 's/updateInBackground.*$/updateInBackground 0\r\nattr global nofork 1
 	&& echo '\ndefine InstallRoutine notify global:INITIALIZED sleep 1;;delete InstallRoutine;;save;;configdb migrate;;sleep 1;;shutdown' >> /opt/fhem/fhem.cfg  \
 	&& perl fhem.pl -d fhem.cfg | tee /opt/fhem/log/fhem_sqlite_install.log;
 
-RUN mkdir /opt/fhemorigin && mv /opt/fhem/* /opt/fhemorigin && rm /opt/fhemorigin/log/*.log
+RUN mkdir /opt/fhemorigin && mv /opt/fhem/* /opt/fhemorigin
 ENTRYPOINT ["bash","/entrypoint.sh"]
