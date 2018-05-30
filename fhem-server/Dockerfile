@@ -33,6 +33,9 @@ RUN touch /sbin/init \
 RUN pkill -f "fhem.pl" \
 	&& update-rc.d -f fhem remove \
 	&& userdel fhem \
+	&& rm /opt/fhem/log/*.log \
+	&& usermod -aG dialout root \
+	&& chmod -R a+w /opt/fhem \
 	&& apt-get clean  \
 	&& apt-get autoclean  \
 	&& apt-get autoremove -y  \
