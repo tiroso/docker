@@ -39,6 +39,7 @@ RUN touch /sbin/init \
 	&& apt-get autoremove -y  \
 	&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 	
+WORKDIR "/opt/fhem"
 #COPY start.sh File to Image
 COPY entrypoint.sh /entrypoint.sh
 # Create /opt/fhem/configDB.conf
