@@ -7,11 +7,11 @@ ENV TERM xterm
 
 
 RUN touch /sbin/init \
-	&& wget -qO - https://debian.fhem.de/archive.key | apt-key add -  \
-	&& echo "deb http://debian.fhem.de/nightly/ /" | tee -a /etc/apt/sources.list.d/fhem.list \
 	&& apt-get update \
 	&& apt-get -y install \
 		apt-utils  \
+		wget \
+		gnupg \
 		build-essential \
 		dfu-programmer \
 		etherwake \
@@ -20,11 +20,15 @@ RUN touch /sbin/init \
 		usbutils \
 		apt-transport-https  \
 		telnet  \
-		fhem \
 		sqlite3  \
 		libdbi-perl \ 
 		libdbd-sqlite3-perl \
 		libwww-perl libsoap-lite-perl libxml-parser-perl \
+	&& wget -qO - https://debian.fhem.de/archive.key | apt-key add -  \
+	&& echo "deb http://debian.fhem.de/nightly/ /" | tee -a /etc/apt/sources.list.d/fhem.list \
+	&& apt-get update \
+	&& apt-get -y install \
+		fhem \
 	&& pkill -f "fhem.pl" \
 	&& update-rc.d -f fhem remove \
 	&& chown -R root:root /opt/fhem/ \
