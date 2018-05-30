@@ -1,7 +1,6 @@
 #!/usr/bin bash
 
 set -e
-chown -R root /opt 
 cd /opt/fhem
 port=7072
 
@@ -18,8 +17,8 @@ fi;
 if [ "$1" = "configdb" ];
 then 
 echo "Starte FHEM - configDB";
-perl fhem.pl configDB;
+/usr/bin/perl /opt/fhem/fhem.pl configDB;
 else
 echo "Starte FHEM";
-perl fhem.pl fhem.cfg;
+/usr/bin/perl /opt/fhem/fhem.pl /opt/fhem/fhem.cfg;
 fi;
