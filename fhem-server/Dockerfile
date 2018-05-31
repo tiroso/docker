@@ -35,7 +35,8 @@ RUN pkill -f "fhem.pl" \
 	&& userdel fhem \
 	&& rm /opt/fhem/log/*.log \
 	&& usermod -aG dialout root \
-	&& chmod -R a+w /opt/fhem \
+	&& chmod -R a+w /opt \
+	&& chown -R root:dialout /opt \ 
 	&& apt-get clean  \
 	&& apt-get autoclean  \
 	&& apt-get autoremove -y  \
