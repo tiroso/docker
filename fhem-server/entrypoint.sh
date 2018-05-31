@@ -47,8 +47,8 @@ fi;
 if [ "$1" = "configdb" ];
 then 
 echo "Starte FHEM - configDB";
-perl fhem.pl configDB;
+perl fhem.pl configDB | tee /opt/fhem/log/fhem.log;
 else
 echo "Starte FHEM";
-perl fhem.pl fhem.cfg;
+perl fhem.pl fhem.cfg | tee /opt/fhem/log/fhem.log;
 fi;
