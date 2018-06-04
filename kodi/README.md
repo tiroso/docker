@@ -10,3 +10,6 @@ For newer THETVDB Scrapper
 sudo docker exec kodi wget https://raw.githubusercontent.com/xbmc/xbmc/master/addons/metadata.tvdb.com/tvdb.xml -o /usr/share/kodi/addons/metadata.tvdb.com/tvdb.xml
 
 sudo docker exec kodi wget https://raw.githubusercontent.com/xbmc/xbmc/master/addons/metadata.tvdb.com/addon.xml -o /usr/share/kodi/addons/metadata.tvdb.com/addon.xml
+
+
+![Alt text](img1.jpg?raw=true "Title")
