@@ -12,4 +12,4 @@ sudo docker exec kodi wget https://raw.githubusercontent.com/xbmc/xbmc/master/ad
 sudo docker exec kodi wget https://raw.githubusercontent.com/xbmc/xbmc/master/addons/metadata.tvdb.com/addon.xml -o /usr/share/kodi/addons/metadata.tvdb.com/addon.xml
 
 
-![Alt text](img1.jpg?raw=true "Title")
+![Alt text](img1.png?raw=true "Title")
