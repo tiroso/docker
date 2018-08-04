@@ -1,5 +1,9 @@
 docker run --restart always --name kodi --device="/dev/tty0" --device="/dev/tty2" --device="/dev/fb0" --device="/dev/input" --device="/dev/snd" --device="/dev/vchiq" -v /var/run/dbus:/var/run/dbus -e "TZ=Europe/Berlin" -h KODI-Wohnzimmer -v kodi-userdata:/root/.kodi/userdata -v kodi-data:/usr/share/kodi -d --network host tiroso/kodi-rpi
 
+
+docker run --restart always --name kodi --device="/dev/tty0" --device="/dev/tty2" --device="/dev/fb0" --device="/dev/input" --device="/dev/snd" --device="/dev/vchiq" -v /var/run/dbus:/var/run/dbus -v /etc/timezone:/etc/timezone:ro -v /etc/localtime:/etc/localtime:ro -h KODI-Wohnzimmer -v kodi-userdata:/root/.kodi/userdata -v kodi-data:/usr/share/kodi -d --network host tiroso/kodi-rpi
+
+
 if you want to use zattoo
 
 
